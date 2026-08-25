@@ -40,11 +40,3 @@ nav_order: 2
 | Arts Council Logo - Grayscale G-Logo.png | PNG | [Download](/images/logos/Arts Council Logo - Grayscale G-Logo.png) |
 | Arts Council Logo - Grayscale G-Logo@2x.png | PNG @2x | [Download](/images/logos/Arts Council Logo - Grayscale G-Logo@2x.png) |
 | Arts Council Logo - Grayscale G-logo.ai | Illustrator | [Download](/images/logos/Arts Council Logo - Grayscale G-logo.ai) |
-
----
-
-## PDF
-
-| File | Format | Download |
-|------|--------|---------|
-| GAC_Logo_V1.pdf | PDF | [Download](/images/logos/GAC_Logo_V1.pdf) |
