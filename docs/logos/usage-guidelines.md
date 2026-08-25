@@ -36,6 +36,8 @@ Each configuration includes an approved grayscale version. Use grayscale version
       <th>Swatch</th>
       <th>Hex</th>
       <th>RGB</th>
+      <th>CMYK</th>
+      <th>Pantone</th>
       <th>Usage</th>
     </tr>
   </thead>
@@ -44,28 +46,36 @@ Each configuration includes an approved grayscale version. Use grayscale version
       <td><strong>Deep Navy</strong></td>
       <td><span style="display:inline-block;width:1.8rem;height:1.1rem;border:1px solid #d1d5db;border-radius:0.2rem;background:#162B48;"></span></td>
       <td><code>#162B48</code></td>
-      <td><code>22, 43, 72</code></td>
+      <td><code>R 22, G 43, B 72</code></td>
+      <td><code>C 91, M 77, Y 41, K 36</code></td>
+      <td><code>PMS 534 C</code></td>
       <td>Primary letterforms and main wordmark text.</td>
     </tr>
     <tr>
       <td><strong>Teal</strong></td>
       <td><span style="display:inline-block;width:1.8rem;height:1.1rem;border:1px solid #d1d5db;border-radius:0.2rem;background:#00A89C;"></span></td>
       <td><code>#00A89C</code></td>
-      <td><code>0, 168, 156</code></td>
-      <td>Accent letterforms, secondary wordmark text, and base paint pool graphic.</td>
+      <td><code>R 0, G 168, B 156</code></td>
+      <td><code>C 80, M 5, Y 43, K 0</code></td>
+      <td><code>PMS 326 C</code></td>
+      <td>Secondary letterforms, secondary wordmark text, and base paint pool graphic.</td>
     </tr>
     <tr>
       <td><strong>Coral</strong></td>
       <td><span style="display:inline-block;width:1.8rem;height:1.1rem;border:1px solid #d1d5db;border-radius:0.2rem;background:#F26A51;"></span></td>
       <td><code>#F26A51</code></td>
-      <td><code>242, 106, 81</code></td>
+      <td><code>R 242, G 106, B 81</code></td>
+      <td><code>C 0, M 72, Y 66, K 0</code></td>
+      <td><code>PMS 1645 C</code></td>
       <td>Accent letterform, tertiary wordmark text, and paintbrush handle graphic.</td>
     </tr>
     <tr>
       <td><strong>Gold</strong></td>
       <td><span style="display:inline-block;width:1.8rem;height:1.1rem;border:1px solid #d1d5db;border-radius:0.2rem;background:#F9C646;"></span></td>
       <td><code>#F9C646</code></td>
-      <td><code>249, 198, 70</code></td>
+      <td><code>R 249, G 198, B 70</code></td>
+      <td><code>C 1, M 22, Y 84, K 0</code></td>
+      <td><code>PMS 129 C</code></td>
       <td>Paintbrush bristles graphic and secondary accent blocks.</td>
     </tr>
   </tbody>
