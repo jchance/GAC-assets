@@ -1,0 +1,22 @@
+title: Griffin Arts Council Assets
+description: Brand assets, logos, and media for the Griffin Arts Council
+baseurl: ""
+url: "https://assets.griffinartscouncil.com"
+
+theme: just-the-docs
+
+# Just the Docs configuration
+color_scheme: light
+search_enabled: true
+heading_anchors: true
+
+nav_sort: case_insensitive
+
+footer_content: "&copy; Griffin Arts Council"
+
+# Exclude from site
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/
