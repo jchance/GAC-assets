@@ -16,6 +16,10 @@ nav_sort: case_insensitive
 
 footer_content: "&copy; Griffin Arts Council"
 
+# GitHub repository link (shows GitHub icon in header)
+gh_edit_repository: "https://github.com/jchance/GAC-assets"
+gh_edit_link: false
+
 # Exclude from site
 exclude:
   - Gemfile
