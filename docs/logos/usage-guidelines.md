@@ -11,11 +11,11 @@ You must follow these standards to maintain consistent branding across all print
 
 ## 1. Approved Logo Configurations
 
-### Primary Full Lockup
+### Stacked Logo
 
 Features the stylized GAC lettermark with the integrated paintbrush icon above the stacked Griffin Arts Council text wordmark. Use this configuration on official documents, presentation covers, and main website banners.
 
-### Horizontal Lockup
+### Horizontal Logo
 
 Features the standalone G paintbrush icon on the left, separated by a vertical dividing line from the stacked three-line Griffin Arts Council wordmark. Use this configuration for website navigation headers, email signatures, letterheads, and horizontal sponsorship banners.
 
