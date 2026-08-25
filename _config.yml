@@ -8,6 +8,7 @@ theme: just-the-docs
 # Just the Docs configuration
 color_scheme: light
 logo: "/images/logos/Arts Council Logo - Color Horizontal.svg"
+favicon_ico: "/favicon.ico"
 search_enabled: true
 heading_anchors: true
 
