@@ -8,28 +8,45 @@ nav_order: 4
 
 A curated color palette for web and digital applications, combining our primary brand colors with extended web-safe options.
 
+<script>
+function copyToClipboard(text, element) {
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = element;
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+    btn.style.backgroundColor = '#2BB3B1';
+    setTimeout(() => {
+      btn.innerHTML = originalHTML;
+      btn.style.backgroundColor = '';
+    }, 2000);
+  }).catch(() => {
+    alert('Failed to copy');
+  });
+}
+</script>
+
 ## Brand Colors
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
   <div style="text-align: center;">
     <div style="width: 100%; height: 100px; background: #0D2B45; border-radius: 8px; margin-bottom: 0.5rem;"></div>
     <strong>Navy</strong><br>
-    <code>#0D2B45</code>
+    <button onclick="copyToClipboard('#0D2B45', this)" style="padding: 0.5rem 1rem; background: #0D2B45; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem; font-weight: 500;"><i class="fas fa-copy"></i> #0D2B45</button>
   </div>
   <div style="text-align: center;">
     <div style="width: 100%; height: 100px; background: #2BB3B1; border-radius: 8px; margin-bottom: 0.5rem;"></div>
     <strong>Teal</strong><br>
-    <code>#2BB3B1</code>
+    <button onclick="copyToClipboard('#2BB3B1', this)" style="padding: 0.5rem 1rem; background: #2BB3B1; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem; font-weight: 500;"><i class="fas fa-copy"></i> #2BB3B1</button>
   </div>
   <div style="text-align: center;">
     <div style="width: 100%; height: 100px; background: #FF7A59; border-radius: 8px; margin-bottom: 0.5rem;"></div>
     <strong>Coral</strong><br>
-    <code>#FF7A59</code>
+    <button onclick="copyToClipboard('#FF7A59', this)" style="padding: 0.5rem 1rem; background: #FF7A59; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem; font-weight: 500;"><i class="fas fa-copy"></i> #FF7A59</button>
   </div>
   <div style="text-align: center;">
     <div style="width: 100%; height: 100px; background: #FFC857; border-radius: 8px; margin-bottom: 0.5rem;"></div>
     <strong>Amber</strong><br>
-    <code>#FFC857</code>
+    <button onclick="copyToClipboard('#FFC857', this)" style="padding: 0.5rem 1rem; background: #FFC857; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem; font-weight: 500;"><i class="fas fa-copy"></i> #FFC857</button>
   </div>
 </div>
 
@@ -39,22 +56,22 @@ A curated color palette for web and digital applications, combining our primary 
   <div style="text-align: center;">
     <div style="width: 100%; height: 100px; background: #1E65A3; border-radius: 8px; margin-bottom: 0.5rem;"></div>
     <strong>Blue</strong><br>
-    <code>#1E65A3</code>
+    <button onclick="copyToClipboard('#1E65A3', this)" style="padding: 0.5rem 1rem; background: #1E65A3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem; font-weight: 500;"><i class="fas fa-copy"></i> #1E65A3</button>
   </div>
   <div style="text-align: center;">
     <div style="width: 100%; height: 100px; background: #5C9E6E; border-radius: 8px; margin-bottom: 0.5rem;"></div>
     <strong>Green</strong><br>
-    <code>#5C9E6E</code>
+    <button onclick="copyToClipboard('#5C9E6E', this)" style="padding: 0.5rem 1rem; background: #5C9E6E; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem; font-weight: 500;"><i class="fas fa-copy"></i> #5C9E6E</button>
   </div>
   <div style="text-align: center;">
     <div style="width: 100%; height: 100px; background: #9B59B6; border-radius: 8px; margin-bottom: 0.5rem;"></div>
     <strong>Purple</strong><br>
-    <code>#9B59B6</code>
+    <button onclick="copyToClipboard('#9B59B6', this)" style="padding: 0.5rem 1rem; background: #9B59B6; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem; font-weight: 500;"><i class="fas fa-copy"></i> #9B59B6</button>
   </div>
   <div style="text-align: center;">
     <div style="width: 100%; height: 100px; background: #E8874A; border-radius: 8px; margin-bottom: 0.5rem;"></div>
     <strong>Orange</strong><br>
-    <code>#E8874A</code>
+    <button onclick="copyToClipboard('#E8874A', this)" style="padding: 0.5rem 1rem; background: #E8874A; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem; font-weight: 500;"><i class="fas fa-copy"></i> #E8874A</button>
   </div>
 </div>
 
@@ -76,7 +93,7 @@ Use these colors and styles for alerts, notifications, and status indicators acr
   <div style="width: 80px; height: 80px; background: #1E65A3; border-radius: 8px;"></div>
   <div>
     <strong>Info</strong><br>
-    <code>#1E65A3</code><br>
+    <button onclick="copyToClipboard('#1E65A3', this)" style="padding: 0.3rem 0.6rem; background: #1E65A3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 500;"><i class="fas fa-copy"></i> #1E65A3</button><br>
     <small>Primary information and neutral notifications</small>
   </div>
 </div>
@@ -87,7 +104,7 @@ Use these colors and styles for alerts, notifications, and status indicators acr
   <div style="width: 80px; height: 80px; background: #5C9E6E; border-radius: 8px;"></div>
   <div>
     <strong>Success</strong><br>
-    <code>#5C9E6E</code><br>
+    <button onclick="copyToClipboard('#5C9E6E', this)" style="padding: 0.3rem 0.6rem; background: #5C9E6E; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 500;"><i class="fas fa-copy"></i> #5C9E6E</button><br>
     <small>Confirmations and positive actions</small>
   </div>
 </div>
@@ -98,7 +115,7 @@ Use these colors and styles for alerts, notifications, and status indicators acr
   <div style="width: 80px; height: 80px; background: #FFC857; border-radius: 8px;"></div>
   <div>
     <strong>Warning</strong><br>
-    <code>#FFC857</code><br>
+    <button onclick="copyToClipboard('#FFC857', this)" style="padding: 0.3rem 0.6rem; background: #FFC857; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 500;"><i class="fas fa-copy"></i> #FFC857</button><br>
     <small>Cautions and attention-required messages</small>
   </div>
 </div>
@@ -109,7 +126,7 @@ Use these colors and styles for alerts, notifications, and status indicators acr
   <div style="width: 80px; height: 80px; background: #FF7A59; border-radius: 8px;"></div>
   <div>
     <strong>Danger</strong><br>
-    <code>#FF7A59</code><br>
+    <button onclick="copyToClipboard('#FF7A59', this)" style="padding: 0.3rem 0.6rem; background: #FF7A59; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 500;"><i class="fas fa-copy"></i> #FF7A59</button><br>
     <small>Errors and destructive actions</small>
   </div>
 </div>
