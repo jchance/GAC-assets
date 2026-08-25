@@ -2,7 +2,7 @@
 
 Brand assets, logos, and media for the Griffin Arts Council.
 
-Published at: https://assets.griffinarts.com
+Published at: https://assets.griffinarts.org
 
 ## Adding New Assets
 
