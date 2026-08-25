@@ -132,7 +132,7 @@ Use these colors and styles for alerts, notifications, and status indicators acr
 ### Warning
 
 <div style="display: flex; gap: 1rem; align-items: center; margin: 1rem 0;">
-  <div style="width: 100px; height: 80px; background: #FFC857; border-radius: 8px;"></div>
+  <div style="width: 80px; height: 80px; background: #FFC857; border-radius: 8px;"></div>
   <div>
     <strong>Warning</strong><br>
     <button onclick="copyToClipboard('#FFC857', this)" style="padding: 0.3rem 0.6rem; background: #FFC857; color: #000; border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 500;"><i class="fas fa-copy"></i> #FFC857</button><br>
