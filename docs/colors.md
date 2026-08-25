@@ -79,9 +79,9 @@ function copyToClipboard(text, element) {
     <button onclick="copyToClipboard('#DC3545', this)" style="padding: 0.5rem 1rem; background: #DC3545; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem; font-weight: 500;"><i class="fas fa-copy"></i> #DC3545</button>
   </div>
   <div style="text-align: center;">
-    <div style="width: 100%; height: 100px; background: #E91E63; border-radius: 8px; margin-bottom: 0.5rem;"></div>
-    <strong>Pink</strong><br>
-    <button onclick="copyToClipboard('#E91E63', this)" style="padding: 0.5rem 1rem; background: #E91E63; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem; font-weight: 500;"><i class="fas fa-copy"></i> #E91E63</button>
+    <div style="width: 100%; height: 100px; background: #E84C89; border-radius: 8px; margin-bottom: 0.5rem;"></div>
+    <strong>Rose</strong><br>
+    <button onclick="copyToClipboard('#E84C89', this)" style="padding: 0.5rem 1rem; background: #E84C89; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem; font-weight: 500;"><i class="fas fa-copy"></i> #E84C89</button>
   </div>
   <div style="text-align: center;">
     <div style="width: 100%; height: 100px; background: #6C757D; border-radius: 8px; margin-bottom: 0.5rem;"></div>
