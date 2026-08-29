@@ -31,22 +31,22 @@ function copyToClipboard(text, element) {
   <div style="text-align: center;">
     <div style="width: 100%; height: 100px; background: #0D2B45; border-radius: 8px; margin-bottom: 0.5rem;"></div>
     <strong>Navy</strong><br>
-    <button onclick="copyToClipboard('#0D2B45', this)" style="padding: 0.5rem 1rem; background: #0D2B45; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem; font-weight: 500;"><i class="fas fa-copy"></i> #0D2B45</button>
+    {% color_copy '#0D2B45' %}
   </div>
   <div style="text-align: center;">
     <div style="width: 100%; height: 100px; background: #2BB3B1; border-radius: 8px; margin-bottom: 0.5rem;"></div>
     <strong>Teal</strong><br>
-    <button onclick="copyToClipboard('#2BB3B1', this)" style="padding: 0.5rem 1rem; background: #2BB3B1; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem; font-weight: 500;"><i class="fas fa-copy"></i> #2BB3B1</button>
+    {% color_copy '#2BB3B1' %}
   </div>
   <div style="text-align: center;">
     <div style="width: 100%; height: 100px; background: #FF7A59; border-radius: 8px; margin-bottom: 0.5rem;"></div>
     <strong>Coral</strong><br>
-    <button onclick="copyToClipboard('#FF7A59', this)" style="padding: 0.5rem 1rem; background: #FF7A59; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem; font-weight: 500;"><i class="fas fa-copy"></i> #FF7A59</button>
+    {% color_copy '#FF7A59' %}
   </div>
   <div style="text-align: center;">
     <div style="width: 100%; height: 100px; background: #FFC857; border-radius: 8px; margin-bottom: 0.5rem;"></div>
     <strong>Amber</strong><br>
-    <button onclick="copyToClipboard('#FFC857', this)" style="padding: 0.5rem 1rem; background: #FFC857; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem; font-weight: 500;"><i class="fas fa-copy"></i> #FFC857</button>
+    {% color_copy '#FFC857' %}
   </div>
 </div>
 
@@ -56,42 +56,42 @@ function copyToClipboard(text, element) {
   <div style="text-align: center;">
     <div style="width: 100%; height: 100px; background: #1E65A3; border-radius: 8px; margin-bottom: 0.5rem;"></div>
     <strong>Blue</strong><br>
-    <button onclick="copyToClipboard('#1E65A3', this)" style="padding: 0.5rem 1rem; background: #1E65A3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem; font-weight: 500;"><i class="fas fa-copy"></i> #1E65A3</button>
+    {% color_copy '#1E65A3' %}
   </div>
   <div style="text-align: center;">
     <div style="width: 100%; height: 100px; background: #5C9E6E; border-radius: 8px; margin-bottom: 0.5rem;"></div>
     <strong>Green</strong><br>
-    <button onclick="copyToClipboard('#5C9E6E', this)" style="padding: 0.5rem 1rem; background: #5C9E6E; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem; font-weight: 500;"><i class="fas fa-copy"></i> #5C9E6E</button>
+    {% color_copy '#5C9E6E' %}
   </div>
   <div style="text-align: center;">
     <div style="width: 100%; height: 100px; background: #9B59B6; border-radius: 8px; margin-bottom: 0.5rem;"></div>
     <strong>Purple</strong><br>
-    <button onclick="copyToClipboard('#9B59B6', this)" style="padding: 0.5rem 1rem; background: #9B59B6; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem; font-weight: 500;"><i class="fas fa-copy"></i> #9B59B6</button>
+    {% color_copy '#9B59B6' %}
   </div>
   <div style="text-align: center;">
     <div style="width: 100%; height: 100px; background: #E8874A; border-radius: 8px; margin-bottom: 0.5rem;"></div>
     <strong>Orange</strong><br>
-    <button onclick="copyToClipboard('#E8874A', this)" style="padding: 0.5rem 1rem; background: #E8874A; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem; font-weight: 500;"><i class="fas fa-copy"></i> #E8874A</button>
+    {% color_copy '#E8874A' %}
   </div>
   <div style="text-align: center;">
     <div style="width: 100%; height: 100px; background: #DC3545; border-radius: 8px; margin-bottom: 0.5rem;"></div>
     <strong>Red</strong><br>
-    <button onclick="copyToClipboard('#DC3545', this)" style="padding: 0.5rem 1rem; background: #DC3545; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem; font-weight: 500;"><i class="fas fa-copy"></i> #DC3545</button>
+    {% color_copy '#DC3545' %}
   </div>
   <div style="text-align: center;">
     <div style="width: 100%; height: 100px; background: #E84C89; border-radius: 8px; margin-bottom: 0.5rem;"></div>
     <strong>Rose</strong><br>
-    <button onclick="copyToClipboard('#E84C89', this)" style="padding: 0.5rem 1rem; background: #E84C89; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem; font-weight: 500;"><i class="fas fa-copy"></i> #E84C89</button>
+    {% color_copy '#E84C89' %}
   </div>
   <div style="text-align: center;">
     <div style="width: 100%; height: 100px; background: #6C757D; border-radius: 8px; margin-bottom: 0.5rem;"></div>
     <strong>Gray</strong><br>
-    <button onclick="copyToClipboard('#6C757D', this)" style="padding: 0.5rem 1rem; background: #6C757D; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem; font-weight: 500;"><i class="fas fa-copy"></i> #6C757D</button>
+    {% color_copy '#6C757D' %}
   </div>
   <div style="text-align: center;">
     <div style="width: 100%; height: 100px; background: #84CC16; border-radius: 8px; margin-bottom: 0.5rem;"></div>
     <strong>Lime</strong><br>
-    <button onclick="copyToClipboard('#84CC16', this)" style="padding: 0.5rem 1rem; background: #84CC16; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem; font-weight: 500;"><i class="fas fa-copy"></i> #84CC16</button>
+    {% color_copy '#84CC16' %}
   </div>
 </div>
 
@@ -113,7 +113,7 @@ Use these colors and styles for alerts, notifications, and status indicators acr
   <div style="width: 80px; height: 80px; background: #1E65A3; border-radius: 8px;"></div>
   <div>
     <strong>Info</strong><br>
-    <button onclick="copyToClipboard('#1E65A3', this)" style="padding: 0.3rem 0.6rem; background: #1E65A3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 500;"><i class="fas fa-copy"></i> #1E65A3</button><br>
+    {% color_copy '#1E65A3', sm %}<br>
     <small>Primary information and neutral notifications</small>
   </div>
 </div>
@@ -124,7 +124,7 @@ Use these colors and styles for alerts, notifications, and status indicators acr
   <div style="width: 80px; height: 80px; background: #5C9E6E; border-radius: 8px;"></div>
   <div>
     <strong>Success</strong><br>
-    <button onclick="copyToClipboard('#5C9E6E', this)" style="padding: 0.3rem 0.6rem; background: #5C9E6E; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 500;"><i class="fas fa-copy"></i> #5C9E6E</button><br>
+    {% color_copy '#5C9E6E', sm %}<br>
     <small>Confirmations and positive actions</small>
   </div>
 </div>
@@ -135,7 +135,7 @@ Use these colors and styles for alerts, notifications, and status indicators acr
   <div style="width: 80px; height: 80px; background: #FFC857; border-radius: 8px;"></div>
   <div>
     <strong>Warning</strong><br>
-    <button onclick="copyToClipboard('#FFC857', this)" style="padding: 0.3rem 0.6rem; background: #FFC857; color: #000; border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 500;"><i class="fas fa-copy"></i> #FFC857</button><br>
+    {% color_copy '#FFC857', sm %}<br>
     <small>Cautions and attention-required messages</small>
   </div>
 </div>
@@ -146,7 +146,7 @@ Use these colors and styles for alerts, notifications, and status indicators acr
   <div style="width: 80px; height: 80px; background: #DC3545; border-radius: 8px;"></div>
   <div>
     <strong>Danger</strong><br>
-    <button onclick="copyToClipboard('#DC3545', this)" style="padding: 0.3rem 0.6rem; background: #DC3545; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 500;"><i class="fas fa-copy"></i> #DC3545</button><br>
+    {% color_copy '#DC3545', sm %}<br>
     <small>Errors and destructive actions</small>
   </div>
 </div>
@@ -162,7 +162,7 @@ Apply these styles to notification containers:
 </div>
 ```
 
-- **Info**: Border and text color <button onclick="copyToClipboard('#1E65A3', this)" style="padding: 0.2rem 0.45rem; background: #1E65A3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 500;"><i class="fas fa-copy"></i> #1E65A3</button>, background <button onclick="copyToClipboard('#E8F4F9', this)" style="padding: 0.2rem 0.45rem; background: #E8F4F9; color: #000; border: 1px solid #D0E6F1; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 500;"><i class="fas fa-copy"></i> #E8F4F9</button>
-- **Success**: Border and text color <button onclick="copyToClipboard('#5C9E6E', this)" style="padding: 0.2rem 0.45rem; background: #5C9E6E; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 500;"><i class="fas fa-copy"></i> #5C9E6E</button>, background <button onclick="copyToClipboard('#E8F5E9', this)" style="padding: 0.2rem 0.45rem; background: #E8F5E9; color: #000; border: 1px solid #D5E7D7; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 500;"><i class="fas fa-copy"></i> #E8F5E9</button>
-- **Warning**: Border and text color <button onclick="copyToClipboard('#FFC857', this)" style="padding: 0.2rem 0.45rem; background: #FFC857; color: #000; border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 500;"><i class="fas fa-copy"></i> #FFC857</button>, background <button onclick="copyToClipboard('#FFF8E1', this)" style="padding: 0.2rem 0.45rem; background: #FFF8E1; color: #000; border: 1px solid #F0E6C0; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 500;"><i class="fas fa-copy"></i> #FFF8E1</button>
-- **Danger**: Border and text color <button onclick="copyToClipboard('#DC3545', this)" style="padding: 0.2rem 0.45rem; background: #DC3545; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 500;"><i class="fas fa-copy"></i> #DC3545</button>, background <button onclick="copyToClipboard('#FFEBEE', this)" style="padding: 0.2rem 0.45rem; background: #FFEBEE; color: #000; border: 1px solid #F3D5D8; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 500;"><i class="fas fa-copy"></i> #FFEBEE</button>
+- **Info**: Border and text color {% color_copy '#1E65A3', sm %}, background {% color_copy '#E8F4F9', sm %}
+- **Success**: Border and text color {% color_copy '#5C9E6E', sm %}, background {% color_copy '#E8F5E9', sm %}
+- **Warning**: Border and text color {% color_copy '#FFC857', sm %}, background {% color_copy '#FFF8E1', sm %}
+- **Danger**: Border and text color {% color_copy '#DC3545', sm %}, background {% color_copy '#FFEBEE', sm %}
