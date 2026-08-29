@@ -10,7 +10,6 @@ This page doubles as the live demo/test page for the `color_copy` plugin.
 
 A curated color palette for web and digital applications, combining our primary brand colors with extended web-safe options.
 
-{% include color_copy.js %}
 
 ## Brand Colors
 
