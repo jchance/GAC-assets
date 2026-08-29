@@ -113,10 +113,11 @@ Use these colors and styles for alerts, notifications, and status indicators acr
 ### Info
 
 <div style="display: flex; gap: 1rem; align-items: center; margin: 1rem 0;">
-  <div style="width: 80px; height: 80px; background: #1E65A3; border-radius: 8px;"></div>
+  <div style="width: 90px; height: 90px; background: #1E65A3; border-radius: 8px;"></div>
   <div>
     <strong>Info</strong><br>
-    {% color_copy '#1E65A3', sm %}<br>
+    Text Color: {% color_copy '#1E65A3', sm %}<br>
+    Background Color: {% color_copy '#E8F4F9', sm %}<br>
     <small>Primary information and neutral notifications</small>
   </div>
 </div>
@@ -124,10 +125,11 @@ Use these colors and styles for alerts, notifications, and status indicators acr
 ### Success
 
 <div style="display: flex; gap: 1rem; align-items: center; margin: 1rem 0;">
-  <div style="width: 80px; height: 80px; background: #5C9E6E; border-radius: 8px;"></div>
+  <div style="width: 90px; height: 90px; background: #5C9E6E; border-radius: 8px;"></div>
   <div>
     <strong>Success</strong><br>
-    {% color_copy '#5C9E6E', sm %}<br>
+    Text Color: {% color_copy '#5C9E6E', sm %}<br>
+    Background Color: {% color_copy '#E8F5E9', sm %}<br>
     <small>Confirmations and positive actions</small>
   </div>
 </div>
@@ -135,10 +137,11 @@ Use these colors and styles for alerts, notifications, and status indicators acr
 ### Warning
 
 <div style="display: flex; gap: 1rem; align-items: center; margin: 1rem 0;">
-  <div style="width: 80px; height: 80px; background: #FFC857; border-radius: 8px;"></div>
+  <div style="width: 90px; height: 90px; background: #FFC857; border-radius: 8px;"></div>
   <div>
     <strong>Warning</strong><br>
-    {% color_copy '#FFC857', sm %}<br>
+    Text Color: {% color_copy '#FFC857', sm %}<br>
+    Background Color: {% color_copy '#FFF8E1', sm %}<br>
     <small>Cautions and attention-required messages</small>
   </div>
 </div>
@@ -146,26 +149,11 @@ Use these colors and styles for alerts, notifications, and status indicators acr
 ### Danger
 
 <div style="display: flex; gap: 1rem; align-items: center; margin: 1rem 0;">
-  <div style="width: 80px; height: 80px; background: #DC3545; border-radius: 8px;"></div>
+  <div style="width: 90px; height: 90px; background: #DC3545; border-radius: 8px;"></div>
   <div>
     <strong>Danger</strong><br>
-    {% color_copy '#DC3545', sm %}<br>
+    Text Color: {% color_copy '#DC3545', sm %}<br>
+    Background Color: {% color_copy '#FFEBEE', sm %}<br>
     <small>Errors and destructive actions</small>
   </div>
 </div>
-
-## Notification Styles
-
-Apply these styles to notification containers:
-
-```html
-<div style="padding: 1rem; border-radius: 4px; border-left: 4px solid; margin-bottom: 1rem;">
-  <strong>Info Message</strong>
-  <p>This is an informational notification.</p>
-</div>
-```
-
-- **Info**: Border and text color {% color_copy '#1E65A3', sm %}, background {% color_copy '#E8F4F9', sm %}
-- **Success**: Border and text color {% color_copy '#5C9E6E', sm %}, background {% color_copy '#E8F5E9', sm %}
-- **Warning**: Border and text color {% color_copy '#FFC857', sm %}, background {% color_copy '#FFF8E1', sm %}
-- **Danger**: Border and text color {% color_copy '#DC3545', sm %}, background {% color_copy '#FFEBEE', sm %}
