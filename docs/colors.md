@@ -6,27 +6,11 @@ nav_order: 4
 
 # Griffin Arts Council Web Color Palette
 
+This page doubles as the live demo/test page for the `color_copy` plugin.
+
 A curated color palette for web and digital applications, combining our primary brand colors with extended web-safe options.
 
-<script>
-function copyToClipboard(text, element) {
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = element;
-    const originalHTML = btn.innerHTML;
-    const originalStyle = btn.getAttribute('style');
-    btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-    btn.style.backgroundColor = '#2BB3B1';
-    btn.style.color = 'white';
-    btn.style.border = 'none';
-    setTimeout(() => {
-      btn.innerHTML = originalHTML;
-      btn.setAttribute('style', originalStyle);
-    }, 2000);
-  }).catch(() => {
-    alert('Failed to copy');
-  });
-}
-</script>
+{% include color_copy.js %}
 
 ## Brand Colors
 
