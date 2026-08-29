@@ -15,24 +15,20 @@ A curated color palette for web and digital applications, combining our primary 
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
   <div style="text-align: center;">
-    <div style="width: 100%; height: 100px; background: #0D2B45; border-radius: 8px; margin-bottom: 0.5rem;"></div>
-    <strong>Navy</strong><br>
-    {% color_copy '#0D2B45' %}
+    {% color_copy '#0D2B45', swatch %}<br>
+    <strong>Navy</strong>
   </div>
   <div style="text-align: center;">
-    <div style="width: 100%; height: 100px; background: #2BB3B1; border-radius: 8px; margin-bottom: 0.5rem;"></div>
-    <strong>Teal</strong><br>
-    {% color_copy '#2BB3B1' %}
+    {% color_copy '#2BB3B1', swatch %}<br>
+    <strong>Teal</strong>
   </div>
   <div style="text-align: center;">
-    <div style="width: 100%; height: 100px; background: #FF7A59; border-radius: 8px; margin-bottom: 0.5rem;"></div>
-    <strong>Coral</strong><br>
-    {% color_copy '#FF7A59' %}
+    {% color_copy '#FF7A59', swatch %}<br>
+    <strong>Coral</strong>
   </div>
   <div style="text-align: center;">
-    <div style="width: 100%; height: 100px; background: #FFC857; border-radius: 8px; margin-bottom: 0.5rem;"></div>
-    <strong>Amber</strong><br>
-    {% color_copy '#FFC857' %}
+    {% color_copy '#FFC857', swatch %}<br>
+    <strong>Amber</strong>
   </div>
 </div>
 
@@ -40,44 +36,36 @@ A curated color palette for web and digital applications, combining our primary 
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
   <div style="text-align: center;">
-    <div style="width: 100%; height: 100px; background: #1E65A3; border-radius: 8px; margin-bottom: 0.5rem;"></div>
-    <strong>Blue</strong><br>
-    {% color_copy '#1E65A3' %}
+    {% color_copy '#1E65A3', swatch %}<br>
+    <strong>Blue</strong>
   </div>
   <div style="text-align: center;">
-    <div style="width: 100%; height: 100px; background: #5C9E6E; border-radius: 8px; margin-bottom: 0.5rem;"></div>
-    <strong>Green</strong><br>
-    {% color_copy '#5C9E6E' %}
+    {% color_copy '#5C9E6E', swatch %}<br>
+    <strong>Green</strong>
   </div>
   <div style="text-align: center;">
-    <div style="width: 100%; height: 100px; background: #9B59B6; border-radius: 8px; margin-bottom: 0.5rem;"></div>
-    <strong>Purple</strong><br>
-    {% color_copy '#9B59B6' %}
+    {% color_copy '#9B59B6', swatch %}<br>
+    <strong>Purple</strong>
   </div>
   <div style="text-align: center;">
-    <div style="width: 100%; height: 100px; background: #E8874A; border-radius: 8px; margin-bottom: 0.5rem;"></div>
-    <strong>Orange</strong><br>
-    {% color_copy '#E8874A' %}
+    {% color_copy '#E8874A', swatch %}<br>
+    <strong>Orange</strong>
   </div>
   <div style="text-align: center;">
-    <div style="width: 100%; height: 100px; background: #DC3545; border-radius: 8px; margin-bottom: 0.5rem;"></div>
-    <strong>Red</strong><br>
-    {% color_copy '#DC3545' %}
+    {% color_copy '#DC3545', swatch %}<br>
+    <strong>Red</strong>
   </div>
   <div style="text-align: center;">
-    <div style="width: 100%; height: 100px; background: #E84C89; border-radius: 8px; margin-bottom: 0.5rem;"></div>
-    <strong>Rose</strong><br>
-    {% color_copy '#E84C89' %}
+    {% color_copy '#E84C89', swatch %}<br>
+    <strong>Rose</strong>
   </div>
   <div style="text-align: center;">
-    <div style="width: 100%; height: 100px; background: #6C757D; border-radius: 8px; margin-bottom: 0.5rem;"></div>
-    <strong>Gray</strong><br>
-    {% color_copy '#6C757D' %}
+    {% color_copy '#6C757D', swatch %}<br>
+    <strong>Gray</strong>
   </div>
   <div style="text-align: center;">
-    <div style="width: 100%; height: 100px; background: #84CC16; border-radius: 8px; margin-bottom: 0.5rem;"></div>
-    <strong>Lime</strong><br>
-    {% color_copy '#84CC16' %}
+    {% color_copy '#84CC16', swatch %}<br>
+    <strong>Lime</strong>
   </div>
 </div>
 
