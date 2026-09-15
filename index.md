@@ -15,4 +15,4 @@ Welcome to the Griffin Arts Council brand asset library. Here you'll find offici
 
 ---
 
-*For questions about brand usage, contact the Griffin Arts Council.*
+*For questions about brand usage, contact the [Griffin Arts Council](https://griffinarts.org/).*

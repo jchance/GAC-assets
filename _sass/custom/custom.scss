@@ -1,1 +1,117 @@
-// custom SCSS (or CSS) goes here
+// GAC typography overrides
+
+:root {
+  --gac-navy: #0d2b45;
+  --gac-teal: #2bb3b1;
+  --gac-teal-dark: #1f8584;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: "rucksack", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  color: var(--gac-navy);
+}
+
+h1,
+h2,
+h3 {
+  font-family: "fatfrank", "rucksack", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  color: var(--gac-navy);
+}
+
+h1,
+.text-alpha {
+  font-size: clamp(2rem, 4vw, 2.625rem);
+}
+
+h2,
+.text-beta,
+#toctitle {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+h3,
+.text-gamma {
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+}
+
+h4,
+h5,
+h6,
+.text-delta,
+.text-epsilon,
+.text-zeta {
+  font-family: "rucksack", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: var(--gac-navy);
+}
+
+h4,
+.text-delta {
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+h5,
+h6,
+.text-epsilon,
+.text-zeta {
+  font-weight: 700;
+}
+
+p,
+li,
+dd,
+dt,
+td,
+th {
+  max-width: 72ch;
+}
+
+a {
+  color: var(--gac-teal-dark);
+  font-weight: 500;
+}
+
+a:hover,
+a:focus-visible {
+  color: var(--gac-navy);
+}
+
+.nav-list-link,
+.site-title,
+.breadcrumb-nav-list-item {
+  font-family: "rucksack", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.nav-list-link {
+  color: var(--gac-navy);
+  font-weight: 500;
+}
+
+.nav-list-link:hover,
+.nav-list-link.active {
+  color: var(--gac-teal-dark);
+}
+
+.btn,
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+code,
+pre,
+.text-mono {
+  font-family: "SFMono-Regular", menlo, consolas, monospace;
+}
