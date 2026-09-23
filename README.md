@@ -19,7 +19,7 @@ bundle install
 bundle exec jekyll serve
 ```
 
-Then visit http://localhost:4000
+Then open the local server in your browser.
 
 ## color_copy plugin
 
@@ -42,7 +42,7 @@ Use the default `md` size for the standard button, `sm` for the compact variant,
 
 ### Demo
 
-A local demo and test page lives in `jasonchance/docs/colors.md`.
+See the [jekyll-color-copy-tag repository](https://github.com/jchance/jekyll-color-copy-tag) for the demo and test page.
 
 ### Config / Options
 
@@ -57,7 +57,7 @@ The copied color is configurable and defaults to `#2BB3B1`.
 
 - Shipped JavaScript include: `{% include color_copy.js %}`
 - Bundled SVG icons mean FontAwesome is not required
-- Demo page: `jasonchance/docs/colors.md`
+- Demo and source repository: [jasonchance/jekyll-color-copy-tag](https://github.com/jchance/jekyll-color-copy-tag)
 
 ### Credits
 
