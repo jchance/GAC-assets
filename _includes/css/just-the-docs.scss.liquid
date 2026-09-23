@@ -1,6 +1,10 @@
 {% if site.logo %}
 $logo: "{{ site.logo | relative_url }}";
 {% endif %}
+{%- comment -%}
+  Load the theme's support and color modules first, then apply the site's
+  typography and component overrides after the theme CSS has been assembled.
+{%- endcomment -%}
 @import "./support/support";
 @import "./custom/setup";
 @import "./color_schemes/light";

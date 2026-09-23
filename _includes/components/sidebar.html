@@ -25,6 +25,11 @@
   {% if nav_footer_custom != "" %}
     {{ nav_footer_custom }}
   {% else %}
+    {%- comment -%}
+      Keep a useful organization link when nav_footer_custom.html is empty.
+      This fallback is intentionally inside the component so the navigation
+      remains complete even when the optional override is removed.
+    {%- endcomment -%}
     <footer class="site-footer">
       Learn more about the Griffin Arts Council, visit <a href="https://griffinarts.org">GriffinArts.org</a>.
     </footer>

@@ -7,8 +7,13 @@ layout: table_wrappers
 <html lang="{{ site.lang | default: 'en-US' }}">
 {% include head.html %}
 <body>
+  {%- comment -%}Keep keyboard focus reachable before the site navigation.{%- endcomment -%}
   <a class="skip-to-main" href="#main-content">Skip to main content</a>
   {% include icons/icons.html %}
+  {%- comment -%}
+    Page-level settings take precedence over layout defaults, which in turn
+    take precedence over the site's global navigation setting.
+  {%- endcomment -%}
   {% if page.nav_enabled == true %}
     {% include components/sidebar.html %}
   {% elsif layout.nav_enabled == true and page.nav_enabled == nil %}
@@ -22,12 +27,17 @@ layout: table_wrappers
       {% include components/breadcrumbs.html %}
       <div id="main-content" class="main-content">
         <main>
+          {%- comment -%}
+            The anchor_headings include adds accessible heading links while
+            preserving the raw page content when heading anchors are disabled.
+          {%- endcomment -%}
           {% if site.heading_anchors != false %}
             {% include vendor/anchor_headings.html html=content beforeHeading="true" anchorBody="<svg viewBox=\"0 0 16 16\" aria-hidden=\"true\"><use xlink:href=\"#svg-link\"></use></svg>" anchorClass="anchor-heading" anchorAttrs="aria-labelledby=\"%html_id%\"" %}
           {% else %}
             {{ content }}
           {% endif %}
 
+          {%- comment -%}Child navigation doubles as the page table of contents.{%- endcomment -%}
           {% if page.has_toc != false %}
             {% include components/children_nav.html %}
           {% endif %}

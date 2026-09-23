@@ -5,7 +5,8 @@ url: "https://assets.griffinarts.org"
 
 theme: just-the-docs
 
-# Just the Docs configuration
+# Just the Docs configuration. The theme supplies the base layout and
+# components; local overrides live under _layouts, _includes, and _sass.
 color_scheme: light
 logo: "/images/logos/Arts Council Logo - Color Horizontal.svg"
 favicon_ico: "/favicon.ico"
@@ -16,7 +17,8 @@ nav_sort: case_insensitive
 
 footer_content: "&copy; Griffin Arts Council"
 
-# GitHub repository link (shows GitHub icon in header)
+# Keep the repository URL configured for theme integrations, but hide the
+# built-in edit link because this site uses a custom GitHub header link.
 gh_edit_repository: "https://github.com/jchance/GAC-assets"
 gh_edit_link: false
 
@@ -28,4 +30,5 @@ exclude:
   - vendor/
 
 plugins:
+  # Registers the Liquid tag used by docs/colors.md and the color examples.
   - jekyll-color-copy-tag
