@@ -16,7 +16,7 @@ nav_order: 1
 | Arts Council Logo - Color Horizontal.png | PNG | [Download](/images/logos/Arts Council Logo - Color Horizontal.png) |
 | Arts Council Logo - Color Horizontal@2x.png | PNG @2x | [Download](/images/logos/Arts Council Logo - Color Horizontal@2x.png) |
 | Arts Council Logo - Color Horizontal.svg | SVG | [Download](/images/logos/Arts Council Logo - Color Horizontal.svg) |
-| Arts Council Logo - Color Horizontal.ai | Illustrator | [Download](/images/logos/Arts Council Logo - Color Horizontal.ai) |
+| Arts Council Logo - Color Horizontal.ai | Illustrator | <a href="/images/logos/Arts Council Logo - Color Horizontal.ai" download="Arts Council Logo - Color Horizontal.ai">Download</a> |
 
 ---
 
@@ -29,7 +29,7 @@ nav_order: 1
 | Arts Council Logo - Color Stacked.png | PNG | [Download](/images/logos/Arts Council Logo - Color Stacked.png) |
 | Arts Council Logo - Color Stacked@2x.png | PNG @2x | [Download](/images/logos/Arts Council Logo - Color Stacked@2x.png) |
 | Arts Council Logo - Color Stacked.svg | SVG | [Download](/images/logos/Arts Council Logo - Color Stacked.svg) |
-| Arts Council Logo - Color Stacked.ai | Illustrator | [Download](/images/logos/Arts Council Logo - Color Stacked.ai) |
+| Arts Council Logo - Color Stacked.ai | Illustrator | <a href="/images/logos/Arts Council Logo - Color Stacked.ai" download="Arts Council Logo - Color Stacked.ai">Download</a> |
 
 ---
 
@@ -42,7 +42,7 @@ nav_order: 1
 | Arts Council Logo - Color G-Logo.png | PNG | [Download](/images/logos/Arts Council Logo - Color G-Logo.png) |
 | Arts Council Logo - Color G-Logo@2x.png | PNG @2x | [Download](/images/logos/Arts Council Logo - Color G-Logo@2x.png) |
 | Arts Council Logo - Color G-Logo.svg | SVG | [Download](/images/logos/Arts Council Logo - Color G-Logo.svg) |
-| Arts Council Logo - Color G-Logo.ai | Illustrator | [Download](/images/logos/Arts Council Logo - Color G-Logo.ai) |
+| Arts Council Logo - Color G-Logo.ai | Illustrator | <a href="/images/logos/Arts Council Logo - Color G-Logo.ai" download="Arts Council Logo - Color G-Logo.ai">Download</a> |
 
 ---
 
