@@ -15,6 +15,7 @@ nav_order: 1
 |------|--------|---------|
 | Arts Council Logo - Color Horizontal.png | PNG | [Download](/images/logos/Arts Council Logo - Color Horizontal.png) |
 | Arts Council Logo - Color Horizontal@2x.png | PNG @2x | [Download](/images/logos/Arts Council Logo - Color Horizontal@2x.png) |
+| Arts Council Logo - Color Horizontal - Email Signature.png | PNG for email signatures | [Download](/images/logos/Arts Council Logo - Color Horizontal - Email Signature.png) |
 | Arts Council Logo - Color Horizontal.svg | SVG | [Download](/images/logos/Arts Council Logo - Color Horizontal.svg) |
 | Arts Council Logo - Color Horizontal.ai | Illustrator | <a href="/images/logos/Arts Council Logo - Color Horizontal.ai" download="Arts Council Logo - Color Horizontal.ai">Download</a> |
 
