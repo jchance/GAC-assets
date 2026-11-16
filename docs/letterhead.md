@@ -53,13 +53,3 @@ Nothing on the page prints closer than half an inch to the edge, so printers tha
 | Letter text | Georgia, 11 pt |
 | Header and footer text | Rucksack |
 | Colors | Deep Navy, Teal, Coral, and Gold from the [brand palette]({% link docs/logos/usage-guidelines.md %}#2-brand-color-palette) |
-
-## Updating the Letterhead
-
-The letterhead comes from one source page, [`letterhead/letterhead.html`](/letterhead/letterhead.html). To change the address or anything else:
-
-1. Edit `letterhead/letterhead.html`.
-2. Start the site with `bundle exec jekyll serve`. The page has to load from localhost so Adobe Fonts serves Rucksack.
-3. Run `script/build-letterhead`. It rebuilds both PDFs, both Word templates, and the preview images in `images/letterhead/`.
-
-The build needs Google Chrome, poppler (`brew install poppler`), ImageMagick, and the `python-docx` Python package.
