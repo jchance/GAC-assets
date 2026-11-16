@@ -83,7 +83,7 @@ def build(pdf, out):
         tight(header_p)
         set_alt_text(
             header_p.add_run().add_picture(str(header_png), width=Inches(HEADER_BOX[2])),
-            "Griffin Arts Council logo, 109 S Hill St, Suite B, Griffin, GA 30223, griffinarts.org",
+            "Griffin Arts Council logo, 109 S Hill St, Suite B, Griffin, GA 30223, hello@griffinarts.org, griffinarts.org",
         )
 
         footer_p = section.footer.paragraphs[0]
