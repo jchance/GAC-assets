@@ -4,8 +4,16 @@
 Each row of the roster gets a folder in business-cards/print/ with:
 
   <Name> - Front.pdf   upload to MOO as the front
-  <Name> - Back.pdf    upload to MOO as the back (the same for everyone)
-  <Name> - proof.png   both sides with trim and safe-area lines, for review
+  <Name> - proof.png   the front and both backs with trim and safe-area
+                       lines, for the person to review
+
+The backs are the same for everyone, so they're built once into
+business-cards/print/Backs/:
+
+  Back - Membership.pdf   QR code to griffinarts.org/membership
+  Back - Sponsor.pdf      QR code to griffinarts.org/become-a-sponsor
+
+MOO prints more than one back design in a single order at no extra cost.
 
 The PDFs follow MOO's US standard business card guidelines: one page per
 file, 3.66 x 2.16 in (3.5 x 2 in card plus 0.08 in bleed), CMYK with the
@@ -49,6 +57,8 @@ GRACOL_ICC = Path(os.environ.get(
 ))
 LEGEND_FONT = "/System/Library/Fonts/Helvetica.ttc"
 FIELDS = ["name", "title", "email", "phone"]
+# Back designs in card.html (data-back) and their file names.
+BACKS = {"membership": "Back - Membership", "sponsor": "Back - Sponsor"}
 SAMPLE = {
     "name": "Your Name",
     "title": "Board Member",
@@ -97,10 +107,12 @@ def pdf_info(path):
     return int(pages), size
 
 
-def card_url(base_url, person, side=None, guides=False):
+def card_url(base_url, person, side=None, back=None, guides=False):
     query = urlencode({key: person.get(key, "") for key in FIELDS})
     if side:
         query += f"&side={side}"
+    if back:
+        query += f"&back={back}"
     if guides:
         query += "&guides"
     return f"{base_url}/business-cards/card.html?{query}"
@@ -171,18 +183,20 @@ def to_moo_pdf(src, out, tmp):
         sys.exit(f"error: {out} still has live fonts; the text should be outlines.")
 
 
-def make_proof(url, out_png, base_url, tmp):
-    """Front and back side by side, at 300 dpi, with trim and safe lines."""
+def make_proof(person, out_png, base_url, tmp):
+    """The front on top and both backs below, at 300 dpi, with trim and
+    safe-area lines."""
     pdf = Path(tmp) / "proof.pdf"
-    print_pdf(url, pdf, base_url, pages=2)
+    url = card_url(base_url, person, back=",".join(BACKS), guides=True)
+    print_pdf(url, pdf, base_url, pages=1 + len(BACKS))
     run("pdftoppm", "-r", "300", "-png", str(pdf), str(Path(tmp) / "proof"))
-    sides = sorted(Path(tmp).glob("proof-*.png"))
+    front, *backs = sorted(Path(tmp).glob("proof-*.png"))
     run(
         "magick",
         "-background", "#e9ebee",
-        *[str(s) for s in sides],
-        "-bordercolor", "#e9ebee", "-border", "40",
-        "+append",
+        "(", str(front), "-bordercolor", "#e9ebee", "-border", "40", ")",
+        "(", *[str(b) for b in backs], "-bordercolor", "#e9ebee", "-border", "40", "+append", ")",
+        "-gravity", "center", "-append",
         "(",
         *(["-font", LEGEND_FONT] if Path(LEGEND_FONT).exists() else []),
         "-density", "72", "-pointsize", "30", "-fill", "#3b4250",
@@ -190,24 +204,28 @@ def make_proof(url, out_png, base_url, tmp):
         "Blue dashed line: safe area.   The guides do not print.",
         "-bordercolor", "#e9ebee", "-border", "0x14",
         ")",
-        "-gravity", "center", "-append",
+        "-append",
         "-strip",
         str(out_png),
     )
-    for s in sides:
-        s.unlink()
+    for f in [front, *backs]:
+        f.unlink()
 
 
-def build_card(person, out_dir, base_url, label):
-    """Front PDF, back PDF, and proof for one person."""
+def build_front(person, out_pdf, base_url, tmp):
+    raw = Path(tmp) / "front.pdf"
+    print_pdf(card_url(base_url, person, side="front"), raw, base_url, pages=1)
+    to_moo_pdf(raw, out_pdf, tmp)
+
+
+def build_backs(out_dir, base_url):
+    """The shared back designs, one MOO file each."""
     out_dir.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory() as tmp:
-        for side in ("front", "back"):
-            raw = Path(tmp) / f"{side}.pdf"
-            print_pdf(card_url(base_url, person, side=side), raw, base_url, pages=1)
-            to_moo_pdf(raw, out_dir / f"{label} - {side.title()}.pdf", tmp)
-        make_proof(card_url(base_url, person, guides=True),
-                   out_dir / f"{label} - proof.png", base_url, tmp)
+        for back, label in BACKS.items():
+            raw = Path(tmp) / f"{back}.pdf"
+            print_pdf(card_url(base_url, SAMPLE, side="back", back=back), raw, base_url, pages=1)
+            to_moo_pdf(raw, out_dir / f"{label}.pdf", tmp)
 
 
 def slug(name):
@@ -227,11 +245,17 @@ def read_roster(path):
 
 def build_people(people, base_url):
     print_dir = ROOT / "business-cards" / "print"
+    print("Building the backs")
+    build_backs(print_dir / "Backs", base_url)
     for person in people:
         name = slug(person["name"])
         print(f"Building {person['name']}")
         check_fit(card_url(base_url, person), person["name"])
-        build_card(person, print_dir / name, base_url, name)
+        out_dir = print_dir / name
+        out_dir.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory() as tmp:
+            build_front(person, out_dir / f"{name} - Front.pdf", base_url, tmp)
+            make_proof(person, out_dir / f"{name} - proof.png", base_url, tmp)
     print(f"Done. Files are in {print_dir.relative_to(ROOT)}/")
 
 
@@ -240,39 +264,48 @@ def build_sample(base_url):
     out_dir = ROOT / "images" / "business-cards"
     prefix = "Arts Council Business Card"
     print("Building sample card")
-    build_card(SAMPLE, out_dir, base_url, f"{prefix} - Sample")
-    (out_dir / f"{prefix} - Sample - Back.pdf").rename(out_dir / f"{prefix} - Back.pdf")
-    (out_dir / f"{prefix} - Sample - proof.png").rename(out_dir / "business-card-proof.png")
+    build_backs(out_dir, base_url)
+    for label in BACKS.values():
+        (out_dir / f"{label}.pdf").rename(out_dir / f"{prefix} - {label}.pdf")
+    with tempfile.TemporaryDirectory() as tmp:
+        build_front(SAMPLE, out_dir / f"{prefix} - Sample Front.pdf", base_url, tmp)
+        make_proof(SAMPLE, out_dir / "business-card-proof.png", base_url, tmp)
 
     with tempfile.TemporaryDirectory() as tmp:
         pdf = Path(tmp) / "clean.pdf"
-        print_pdf(card_url(base_url, SAMPLE), pdf, base_url, pages=2)
+        print_pdf(card_url(base_url, SAMPLE, back=",".join(BACKS)), pdf, base_url,
+                  pages=1 + len(BACKS))
         run("pdftoppm", "-r", "300", "-png", str(pdf), str(Path(tmp) / "side"))
-        front, back = sorted(Path(tmp).glob("side-*.png"))
+        sides = sorted(Path(tmp).glob("side-*.png"))
         # Crop the 6 pt bleed (25 px at 300 dpi) to show the finished card.
-        for side in (front, back):
+        for side in sides:
             run("magick", str(side), "-shave", "25x25", str(side))
+        front, back = sides[0], sides[1]
         run(
             "magick",
             "-background", "#e9ebee",
-            str(front), str(back),
+            *[str(x) for x in sides],
             "-bordercolor", "#e9ebee", "-border", "36",
             "+append",
-            "-resize", "1400x",
+            "-resize", "1800x",
             "-strip",
             str(out_dir / "business-card-preview.png"),
         )
-        # 1200x630 link preview: both sides, overlapping, on a gray backdrop.
+        # 1200x630 link preview: the front and the membership back,
+        # slightly overlapping, with soft shadows on a gray backdrop.
+        for side, width in ((front, 600), (back, 520)):
+            run(
+                "magick", str(side), "-resize", f"{width}x",
+                "(", "+clone", "-background", "#1b2533", "-shadow", "28x10+0+8", ")",
+                "+swap", "-background", "none", "-layers", "merge", "+repage",
+                str(side.with_suffix(".shadow.png")),
+            )
         run(
             "magick",
             "-size", "1200x630", "xc:#e9ebee",
-            "(", str(back), "-resize", "640x",
-            "-bordercolor", "#d5d9de", "-border", "1", ")",
-            "-geometry", "+480+230", "-composite",
-            "(", str(front), "-resize", "640x",
-            "-bordercolor", "#d5d9de", "-border", "1", ")",
-            "-geometry", "+80+60", "-composite",
-            "-strip",
+            str(back.with_suffix(".shadow.png")), "-geometry", "+600+250", "-composite",
+            str(front.with_suffix(".shadow.png")), "-geometry", "+60+50", "-composite",
+            "-depth", "8", "-strip",
             str(out_dir / "business-card-share.png"),
         )
     print(f"Done. Files are in {out_dir.relative_to(ROOT)}/")

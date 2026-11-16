@@ -497,10 +497,11 @@
       }
 
       if (params.has("guides")) sheet.classList.add("guides");
-      // ?back=membership (default), sponsor, plain, or all (for proofs).
-      var back = params.get("back") || "membership";
+      // ?back=membership (default), sponsor, plain, or all.
+      // A comma list works too: ?back=membership,sponsor
+      var backs = (params.get("back") || "membership").split(",");
       document.querySelectorAll(".card.back").forEach(function (card) {
-        if (back !== "all" && card.dataset.back !== back) card.remove();
+        if (backs.indexOf("all") < 0 && backs.indexOf(card.dataset.back) < 0) card.remove();
       });
       if (params.get("side") === "front") sheet.classList.add("hide-back");
       if (params.get("side") === "back") sheet.classList.add("hide-front");
