@@ -11,6 +11,7 @@ Welcome to the Griffin Arts Council brand asset library. Here you'll find offici
 ## Categories
 
 - [Logos]({% link docs/logos/index.md %}) — Official logo files in color and grayscale, multiple formats
+- [Letterhead]({% link docs/letterhead.md %}) — Word templates and print-ready PDFs for office laser printers
 - [Web Color Palette]({% link docs/colors.md %}) — Brand and extended web colors for digital applications
 
 ---
