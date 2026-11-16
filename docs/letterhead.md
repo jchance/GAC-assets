@@ -14,7 +14,7 @@ image:
 
 Griffin Arts Council letterhead for US Letter paper. It's built to print on an ordinary office laser printer, in color or black and white.
 
-![Sample letter on Griffin Arts Council letterhead](/images/letterhead/letterhead-preview.png)
+![Sample letter on Griffin Arts Council letterhead](/images/letterhead/letterhead-preview.png){: style="border: 1px solid #d1d5db; box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);"}
 
 ## Downloads
 
