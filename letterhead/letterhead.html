@@ -1,0 +1,211 @@
+<!doctype html>
+<!--
+  Griffin Arts Council letterhead: print source.
+
+  This page is the single source for the letterhead PDFs and the Word
+  templates. script/build-letterhead prints it with headless Chrome.
+
+  Query options:
+    ?mode=gray   grayscale version for black-and-white laser printers
+    ?sample      show a sample letter in the body area (for previews only)
+
+  Layout is US Letter (8.5 x 11 in). Every printed mark stays at least
+  0.5 in from the paper edge, so office laser printers never clip it.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Griffin Arts Council Letterhead</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Rucksack, the brand typeface used on griffinarts.org (Adobe Fonts). -->
+  <link rel="stylesheet" href="https://use.typekit.net/tlc7ffz.css">
+  <style>
+    /* Brand print palette from the logo usage guidelines. */
+    :root {
+      --navy: #162B48;
+      --teal: #00A89C;
+      --coral: #F26A51;
+      --gold: #F9C646;
+      --ink: #162B48;
+      --body-ink: #1a1a1a;
+    }
+
+    /* Grayscale: solid black text and gray rule steps for mono printers. */
+    .gray {
+      --navy: #000;
+      --teal: #555;
+      --coral: #888;
+      --gold: #b5b5b5;
+      --ink: #000;
+      --body-ink: #000;
+    }
+
+    @page { size: letter; margin: 0; }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #e9ebee;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .page {
+      position: relative;
+      width: 8.5in;
+      height: 11in;
+      margin: 0.5in auto;
+      background: #fff;
+      box-shadow: 0 2px 16px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      font-family: "rucksack", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: var(--ink);
+    }
+
+    @media print {
+      html, body { background: #fff; }
+      .page { margin: 0; box-shadow: none; }
+    }
+
+    /* Header ------------------------------------------------------------ */
+
+    .header {
+      position: absolute;
+      top: 0.6in;
+      left: 1in;
+      right: 1in;
+      height: 0.9in;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+
+    .header img {
+      display: block;
+      height: 0.9in;     /* 1.56 in wide, above the 1.25 in print minimum */
+      width: auto;
+    }
+
+    .contact {
+      font-size: 8.5pt;
+      line-height: 1.45;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      text-align: right;
+      padding-bottom: 0.02in;
+    }
+
+    .contact .web {
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    /* Four-color brand rule under the header. */
+    .rule {
+      position: absolute;
+      top: 1.78in;
+      left: 1in;
+      right: 1in;
+      height: 3pt;
+      display: flex;
+      gap: 3pt;
+    }
+
+    .rule span { display: block; height: 100%; }
+    .rule .navy  { flex: 10; background: var(--navy); }
+    .rule .teal  { flex: 1;  background: var(--teal); }
+    .rule .coral { flex: 1;  background: var(--coral); }
+    .rule .gold  { flex: 1;  background: var(--gold); }
+
+    /* Footer ------------------------------------------------------------ */
+
+    .footer {
+      position: absolute;
+      left: 1in;
+      right: 1in;
+      bottom: 0.55in;
+      padding-top: 7pt;
+      border-top: 0.6pt solid var(--navy);
+      display: flex;
+      justify-content: space-between;
+      font-size: 7.5pt;
+      line-height: 1.3;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .footer .tagline { font-weight: 300; }
+
+    /* Sample letter (previews only) -------------------------------------- */
+
+    .letter {
+      display: none;
+      position: absolute;
+      top: 2.35in;
+      left: 1in;
+      right: 1in;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 11pt;
+      line-height: 1.45;
+      color: var(--body-ink);
+    }
+
+    .sample .letter { display: block; }
+    .letter p { margin: 0 0 11pt; }
+    .letter .signature { margin-top: 36pt; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <img id="logo"
+           src="../images/logos/Arts%20Council%20Logo%20-%20Color%20Horizontal.svg"
+           alt="Griffin Arts Council">
+      <address class="contact" style="font-style: normal;">
+        109 S Hill St, Suite B<br>
+        Griffin, GA 30223<br>
+        hello@griffinarts.org<br>
+        <span class="web">griffinarts.org</span>
+      </address>
+    </header>
+
+    <div class="rule" aria-hidden="true">
+      <span class="navy"></span>
+      <span class="teal"></span>
+      <span class="coral"></span>
+      <span class="gold"></span>
+    </div>
+
+    <main class="letter">
+      <p>November 15, 2026</p>
+      <p>Recipient Name<br>Organization<br>Street Address<br>City, State ZIP</p>
+      <p>Dear Recipient Name,</p>
+      <p>This sample shows where a letter sits on the Griffin Arts Council letterhead. Body text is set in Georgia at 11 points, with one-inch margins that line up with the logo and the footer rule.</p>
+      <p>Type your letter in the Word template, or print this blank letterhead onto paper first and feed the sheets back through your printer. Either way, keep the text inside the margins so it stays clear of the header and footer.</p>
+      <p>Thank you for supporting the arts in Griffin.</p>
+      <p>Sincerely,</p>
+      <p class="signature">Name<br>Title, Griffin Arts Council</p>
+    </main>
+
+    <footer class="footer">
+      <span>Griffin Arts Council, Inc. is a 501(c)(3) public charity &middot; EIN 42-5116046</span>
+      <span class="tagline">Igniting creativity. Championing emerging artists.</span>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var page = document.querySelector(".page");
+      if (params.get("mode") === "gray") {
+        page.classList.add("gray");
+        document.getElementById("logo").src =
+          "../images/logos/Arts%20Council%20Logo%20-%20Grayscale%20Horizontal.svg";
+      }
+      if (params.has("sample")) page.classList.add("sample");
+    })();
+  </script>
+</body>
+</html>
