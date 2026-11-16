@@ -1,0 +1,465 @@
+<!doctype html>
+<!--
+  Griffin Arts Council business card: print source.
+
+  One template for every board member. The person's details come from the
+  URL, so the same file makes every card:
+
+    card.html?name=Jason%20Chance&title=President&email=...&phone=...
+
+  Query options:
+    name, title, email, phone   the person's details (all optional)
+    guides                      draw bleed, trim, and safe-area lines (proofs only)
+    side=front | side=back      print one side only
+
+  script/build-business-cards prints this page with headless Chrome for
+  each row of the board roster. Opened in a browser without a name, it
+  shows a form for filling in the card by hand.
+
+  Size: US standard 3.5 x 2 in, trimmed. Each PDF page is 3.75 x 2.25 in:
+  the card plus 0.125 in bleed on every side. Text and the logo stay at
+  least 0.1875 in inside the trim (the safe area).
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Griffin Arts Council Business Card</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Rucksack, the brand typeface used on griffinarts.org (Adobe Fonts). -->
+  <link rel="stylesheet" href="https://use.typekit.net/tlc7ffz.css">
+  <style>
+    /* Brand print palette from the logo usage guidelines. */
+    :root {
+      --navy: #162B48;
+      --teal: #00A89C;
+      --coral: #F26A51;
+      --gold: #F9C646;
+      --bleed: 0.125in;
+      --safe: 0.1875in;
+    }
+
+    @page { size: 3.75in 2.25in; margin: 0; }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      background: #e9ebee;
+      font-family: "rucksack", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: var(--navy);
+    }
+
+    /* One printed page: the trimmed card plus bleed on all four sides. */
+    .card {
+      position: relative;
+      width: 3.75in;
+      height: 2.25in;
+      overflow: hidden;
+      background: #fff;
+      break-after: page;
+    }
+
+    .card:last-of-type { break-after: auto; }
+
+    /* The finished 3.5 x 2 in card, inset by the bleed. */
+    .trim {
+      position: absolute;
+      inset: var(--bleed);
+    }
+
+    /* Front ------------------------------------------------------------- */
+
+    .logo {
+      position: absolute;
+      top: var(--safe);
+      left: var(--safe);
+      width: 1.4in;      /* above the 1.25 in print minimum */
+      height: auto;
+      display: block;
+    }
+
+    .org {
+      position: absolute;
+      top: var(--safe);
+      right: var(--safe);
+      margin: 0;
+      font-style: normal;
+      font-size: 6.75pt;
+      line-height: 1.5;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      text-align: right;
+    }
+
+    .org .web {
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .person {
+      position: absolute;
+      left: var(--safe);
+      bottom: 0.36in;
+      width: 1.6in;
+    }
+
+    .name {
+      margin: 0;
+      font-size: 12.5pt;
+      line-height: 1.1;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .name.wrap { white-space: normal; font-size: 11pt; }
+    .name .word { white-space: nowrap; }
+
+    .title {
+      margin: 3pt 0 0;
+      font-size: 6.75pt;
+      line-height: 1.2;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+
+    .reach {
+      position: absolute;
+      right: var(--safe);
+      bottom: 0.36in;
+      width: 1.45in;
+      margin: 0;
+      font-style: normal;
+      font-size: 7.25pt;
+      line-height: 1.5;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      text-align: right;
+    }
+
+    .reach span { display: block; white-space: nowrap; }
+
+    /* Four-color brand rule along the bottom edge, as on the letterhead.
+       It runs into the bleed on the left, right, and bottom. */
+    .rule {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: calc(var(--bleed) + 0.1in);
+      display: grid;
+      /* Gold runs off the right edge, so it gets the bleed added to keep
+         all three accent blocks the same width once the card is cut. */
+      grid-template-columns: 1fr 0.3in 0.3in calc(0.3in + var(--bleed));
+      gap: 2.5pt;
+    }
+
+    .rule .navy  { background: var(--navy); }
+    .rule .teal  { background: var(--teal); }
+    .rule .coral { background: var(--coral); }
+    .rule .gold  { background: var(--gold); }
+
+    /* Back -------------------------------------------------------------- */
+
+    .back { background: var(--navy); color: #fff; }
+
+    .back .trim {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .tagline {
+      margin: 0;
+      font-size: 11pt;
+      line-height: 1.35;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    .stripe {
+      display: flex;
+      gap: 2.5pt;
+      margin: 10pt 0 9pt;
+    }
+
+    .stripe span { display: block; width: 0.22in; height: 2.5pt; }
+    .stripe .teal  { background: var(--teal); }
+    .stripe .coral { background: var(--coral); }
+    .stripe .gold  { background: var(--gold); }
+
+    .back .web {
+      margin: 0;
+      font-size: 8.5pt;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--gold);
+    }
+
+    /* Proof guides (?guides) -------------------------------------------- */
+
+    .guide { display: none; position: absolute; pointer-events: none; }
+    .guides .guide { display: block; }
+
+    /* Shade the bleed: everything outside the trim gets cut off. */
+    .guide.trimline {
+      inset: var(--bleed);
+      outline: 0.6pt solid #e0245e;
+      box-shadow: 0 0 0 var(--bleed) rgba(224, 36, 94, 0.18);
+    }
+
+    .guide.safeline {
+      inset: calc(var(--bleed) + var(--safe));
+      outline: 0.5pt dashed #1e65a3;
+    }
+
+    /* Screen view ------------------------------------------------------- */
+
+    @media screen {
+      body { padding: 24px 16px 48px; }
+      .sheet {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px;
+        justify-content: center;
+        zoom: 2;
+      }
+      .card { box-shadow: 0 1px 6px rgba(0, 0, 0, 0.18); }
+      .form {
+        max-width: 760px;
+        margin: 0 auto 28px;
+        padding: 16px 20px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        font-size: 14px;
+        color: #1a1a1a;
+      }
+      .form h1 { margin: 0 0 4px; font-size: 18px; }
+      .form p { margin: 0 0 12px; line-height: 1.45; }
+      .form .fields {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 10px 14px;
+      }
+      .form label { display: flex; flex-direction: column; gap: 4px; font-weight: 600; }
+      .form input {
+        font: inherit;
+        font-weight: 400;
+        padding: 6px 8px;
+        border: 1px solid #c3c8cf;
+        border-radius: 4px;
+      }
+      .form .actions { margin-top: 14px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+      .form button {
+        font: inherit;
+        font-weight: 600;
+        padding: 7px 14px;
+        border: 0;
+        border-radius: 4px;
+        background: var(--navy);
+        color: #fff;
+        cursor: pointer;
+      }
+      .form .warn { display: none; color: #b42318; font-weight: 600; }
+      .form.nofont .warn.font, .form.toolong .warn.long { display: block; }
+      @media (max-width: 820px) { .sheet { zoom: 1; } }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .form { display: none; }
+    }
+
+    .hide-front .front, .hide-back .back { display: none; }
+  </style>
+</head>
+<body>
+  <form class="form" id="form" hidden>
+    <h1>Griffin Arts Council business card</h1>
+    <p>Type your details and the card updates. To save a PDF for the printer, choose Print, set the destination to Save as PDF, set margins to None, and turn off headers and footers.</p>
+    <div class="fields">
+      <label>Name <input name="name" autocomplete="name"></label>
+      <label>Title <input name="title" placeholder="Board Member"></label>
+      <label>Email <input name="email" type="email" autocomplete="email"></label>
+      <label>Phone <input name="phone" type="tel" autocomplete="tel"></label>
+    </div>
+    <div class="actions">
+      <button type="button" id="print">Print or save as PDF</button>
+      <label style="flex-direction: row; font-weight: 400;"><input type="checkbox" id="showGuides"> Show trim and safe-area lines</label>
+    </div>
+    <p class="warn long">That's too long to fit on the card. Try a shorter version of the name or email.</p>
+    <p class="warn font">The Rucksack font didn't load, so this card would print in a fallback font. Try again on assets.griffinarts.org, or ask the person who keeps the card files to build your PDF.</p>
+  </form>
+
+  <div class="sheet" id="sheet">
+    <section class="card front" aria-label="Front of card">
+      <div class="trim">
+        <img class="logo" id="logo"
+             src="../images/logos/Arts%20Council%20Logo%20-%20Color%20Horizontal.svg"
+             alt="Griffin Arts Council">
+        <address class="org">
+          109 S Hill St, Suite B<br>
+          Griffin, GA 30223<br>
+          <span class="web">griffinarts.org</span>
+        </address>
+        <div class="person">
+          <p class="name" data-field="name" data-fit>Your Name</p>
+          <p class="title" data-field="title">Board Member</p>
+        </div>
+        <address class="reach">
+          <span data-field="phone" data-fit>(770) 555-0100</span>
+          <span data-field="email" data-fit>name@griffinarts.org</span>
+        </address>
+      </div>
+      <div class="rule" aria-hidden="true">
+        <span class="navy"></span>
+        <span class="teal"></span>
+        <span class="coral"></span>
+        <span class="gold"></span>
+      </div>
+      <div class="guide trimline"></div>
+      <div class="guide safeline"></div>
+    </section>
+
+    <section class="card back" aria-label="Back of card">
+      <div class="trim">
+        <p class="tagline">Igniting creativity.<br>Championing emerging artists.</p>
+        <div class="stripe" aria-hidden="true">
+          <span class="teal"></span>
+          <span class="coral"></span>
+          <span class="gold"></span>
+        </div>
+        <p class="web">GRIFFINARTS.ORG</p>
+      </div>
+      <div class="guide trimline"></div>
+      <div class="guide safeline"></div>
+    </section>
+  </div>
+
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var sheet = document.getElementById("sheet");
+      var form = document.getElementById("form");
+      var defaults = {};
+
+      document.querySelectorAll("[data-field]").forEach(function (el) {
+        defaults[el.dataset.field] = el.textContent;
+      });
+
+      // Shrink a line until it fits its box, for long names and emails.
+      // Returns false if it still doesn't fit at 80% of the normal size.
+      function fit(el) {
+        el.style.fontSize = "";
+        var size = parseFloat(getComputedStyle(el).fontSize);
+        var min = size * 0.8;
+        var box = el.parentElement.clientWidth;
+        while (el.scrollWidth > box && size > min) {
+          size -= 0.25;
+          el.style.fontSize = size + "px";
+        }
+        return el.scrollWidth <= box;
+      }
+
+      // Set the text. Each word of the name is kept whole, so a long name
+      // can wrap between words but never at a hyphen.
+      function setText(el, text) {
+        el.textContent = "";
+        if (el.dataset.field !== "name") {
+          el.textContent = text;
+          return;
+        }
+        text.split(/\s+/).forEach(function (word, i) {
+          if (i) el.appendChild(document.createTextNode(" "));
+          var span = document.createElement("span");
+          span.className = "word";
+          span.textContent = word;
+          el.appendChild(span);
+        });
+      }
+
+      function render(values) {
+        document.querySelectorAll("[data-field]").forEach(function (el) {
+          var key = el.dataset.field;
+          var value = values[key];
+          setText(el, value == null ? defaults[key] : value);
+          el.hidden = value === "";
+        });
+        var tooLong = [];
+        document.querySelectorAll("[data-fit]").forEach(function (el) {
+          el.classList.remove("wrap");
+          if (fit(el)) return;
+          // A very long name goes onto two lines at full size instead.
+          if (el.dataset.field === "name") {
+            el.style.fontSize = "";
+            el.classList.add("wrap");
+            if (el.scrollWidth <= el.parentElement.clientWidth) return;
+          }
+          tooLong.push(el.dataset.field);
+        });
+        // The name and title grow upward. Keep them clear of the logo.
+        var logo = document.getElementById("logo").getBoundingClientRect();
+        var person = document.querySelector(".person").getBoundingClientRect();
+        if (person.top < logo.bottom + 4 && tooLong.indexOf("name") < 0) {
+          tooLong.push("name");
+        }
+        // script/build-business-cards reads this and stops on a bad fit.
+        document.body.dataset.overflow = tooLong.join(" ");
+        form.classList.toggle("toolong", tooLong.length > 0);
+      }
+
+      function fromParams() {
+        var values = {};
+        ["name", "title", "email", "phone"].forEach(function (key) {
+          if (params.has(key)) values[key] = params.get(key).trim();
+        });
+        return values;
+      }
+
+      if (params.has("guides")) sheet.classList.add("guides");
+      if (params.get("side") === "front") sheet.classList.add("hide-back");
+      if (params.get("side") === "back") sheet.classList.add("hide-front");
+
+      function fromForm() {
+        var values = {};
+        new FormData(form).forEach(function (value, key) {
+          if (value.trim()) values[key] = value.trim();
+        });
+        return values;
+      }
+
+      // Without a name in the URL, show the fill-in form (screen only).
+      if (!params.has("name")) {
+        form.hidden = false;
+        form.addEventListener("input", function () { render(fromForm()); });
+        document.getElementById("print").addEventListener("click", function () {
+          window.print();
+        });
+        document.getElementById("showGuides").addEventListener("change", function (e) {
+          sheet.classList.toggle("guides", e.target.checked);
+        });
+      }
+
+      render(fromParams());
+
+      // Fit again once Rucksack has loaded, since widths change with the font.
+      document.fonts.ready.then(function () {
+        render(form.hidden ? fromParams() : fromForm());
+        if (!document.fonts.check('700 12px "rucksack"')) form.classList.add("nofont");
+        document.body.dataset.ready = "true";
+      });
+    })();
+  </script>
+</body>
+</html>

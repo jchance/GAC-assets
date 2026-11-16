@@ -1,0 +1,262 @@
+#!/usr/bin/env python3
+"""Build print-ready business card PDFs and proofs from the board roster.
+
+Each row of the roster becomes one two-page PDF (front, back) at
+3.75 x 2.25 in: the 3.5 x 2 in card plus 0.125 in bleed. Each card also
+gets a proof image with the trim and safe-area lines drawn on it.
+
+Start the site first (bundle exec jekyll serve). The card page must load
+over localhost so the Adobe Fonts kit serves Rucksack.
+
+Usage:
+  script/build-business-cards                 every row in business-cards/roster.csv
+  script/build-business-cards "Jason Chance"  only rows whose name matches
+  script/build-business-cards --sample        sample images for the assets site
+  script/build-business-cards --cmyk          also write a CMYK copy with text outlined
+
+Options:
+  --roster FILE     roster CSV (default business-cards/roster.csv)
+  --base-url URL    where the site is running (default http://localhost:4000)
+
+Needs Google Chrome, poppler (pdffonts, pdfinfo, pdftoppm), and ImageMagick.
+--cmyk also needs Ghostscript.
+"""
+
+import argparse
+import csv
+import os
+import re
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+from urllib.parse import urlencode
+
+ROOT = Path(__file__).resolve().parent.parent
+CHROME = os.environ.get(
+    "CHROME", "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+)
+FIELDS = ["name", "title", "email", "phone"]
+SAMPLE = {
+    "name": "Your Name",
+    "title": "Board Member",
+    "email": "name@griffinarts.org",
+    "phone": "(770) 555-0100",
+}
+LEGEND_FONT = "/System/Library/Fonts/Helvetica.ttc"
+# 3.75 x 2.25 in, in PDF points.
+PAGE_SIZE = "270 x 162 pts"
+
+
+def run(*cmd, **kwargs):
+    return subprocess.run(cmd, check=True, **kwargs)
+
+
+def card_url(base_url, person, guides=False):
+    params = {key: person.get(key, "") for key in FIELDS}
+    query = urlencode(params)
+    if guides:
+        query += "&guides"
+    return f"{base_url}/business-cards/card.html?{query}"
+
+
+def check_fit(url, label):
+    """Stop if a name, email, or phone is too long for the card."""
+    dom = run(
+        CHROME, "--headless=new", "--disable-gpu",
+        "--virtual-time-budget=10000", "--dump-dom", url,
+        stdout=subprocess.PIPE, text=True, stderr=subprocess.DEVNULL,
+    ).stdout
+    match = re.search(r'<body[^>]*data-overflow="([^"]*)"', dom)
+    if match is None:
+        sys.exit(f"error: the card page didn't finish loading for {label}.")
+    if match.group(1):
+        fields = match.group(1).split()
+        verb = "are" if len(fields) > 1 else "is"
+        sys.exit(f"error: {label}'s {' and '.join(fields)} {verb} too long to fit on the card. "
+                 "Shorten it in the roster and run this again.")
+
+
+def print_pdf(url, out, base_url):
+    run(
+        CHROME,
+        "--headless=new",
+        "--disable-gpu",
+        "--no-pdf-header-footer",
+        "--virtual-time-budget=10000",
+        f"--print-to-pdf={out}",
+        url,
+        stderr=subprocess.DEVNULL,
+    )
+    # Chrome falls back to another font without saying so. Catch that.
+    fonts = run("pdffonts", str(out), capture_output=True, text=True).stdout
+    if "RuckSack" not in fonts:
+        sys.exit(f"error: Rucksack is not embedded in {out}. Is {base_url} running?")
+    check_pdf(out)
+
+
+def check_pdf(out):
+    info = run("pdfinfo", str(out), capture_output=True, text=True).stdout
+    pages = re.search(r"^Pages:\s+(\d+)", info, re.M).group(1)
+    size = re.search(r"^Page size:\s+(.*?)(?: \(|$)", info, re.M).group(1).strip()
+    if pages != "2" or size != PAGE_SIZE:
+        sys.exit(f"error: {out} has {pages} pages of {size}, expected 2 of {PAGE_SIZE}")
+
+
+def cmyk_copy(pdf, out):
+    """CMYK copy with the text turned into outlines, for print shops that
+    ask for CMYK files without live fonts. Ghostscript converts the brand
+    colors with its default profile, so they land within a few points of
+    the brand CMYK values rather than exactly on them."""
+    run(
+        "gs", "-q", "-o", str(out),
+        "-sDEVICE=pdfwrite",
+        "-dNoOutputFonts",
+        "-sColorConversionStrategy=CMYK",
+        "-dProcessColorModel=/DeviceCMYK",
+        str(pdf),
+    )
+    check_pdf(out)
+
+
+def make_proof(url, out_png, base_url, tmp):
+    """Front and back side by side, at 300 dpi, with trim and safe lines."""
+    pdf = Path(tmp) / "proof.pdf"
+    print_pdf(url, pdf, base_url)
+    prefix = Path(tmp) / "side"
+    run("pdftoppm", "-r", "300", "-png", str(pdf), str(prefix))
+    sides = sorted(Path(tmp).glob("side-*.png"))
+    run(
+        "magick",
+        "-background", "#e9ebee",
+        *[str(s) for s in sides],
+        "-bordercolor", "#e9ebee", "-border", "40",
+        "+append",
+        "(",
+        *(["-font", LEGEND_FONT] if Path(LEGEND_FONT).exists() else []),
+        "-density", "72", "-pointsize", "30", "-fill", "#3b4250",
+        "label:Pink area is cut off.   Red line: trim (3.5 x 2 in).   "
+        "Blue dashed line: safe area.   The guides do not print.",
+        "-bordercolor", "#e9ebee", "-border", "0x14",
+        ")",
+        "-gravity", "center", "-append",
+        "-strip",
+        str(out_png),
+    )
+    for s in sides:
+        s.unlink()
+
+
+def slug(name):
+    return re.sub(r"[^A-Za-z0-9 .-]", "", name).strip() or "card"
+
+
+def read_roster(path):
+    with open(path, newline="", encoding="utf-8-sig") as f:
+        rows = list(csv.DictReader(f))
+    people = []
+    for row in rows:
+        person = {k: (row.get(k) or "").strip() for k in FIELDS}
+        if person["name"]:
+            people.append(person)
+    return people
+
+
+def build_people(people, base_url, cmyk=False):
+    out_dir = ROOT / "business-cards" / "print"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    for person in people:
+        base = f"{slug(person['name'])} - Business Card"
+        pdf = out_dir / f"{base}.pdf"
+        png = out_dir / f"{base} - proof.png"
+        print(f"Building {person['name']}")
+        check_fit(card_url(base_url, person), person["name"])
+        print_pdf(card_url(base_url, person), pdf, base_url)
+        if cmyk:
+            cmyk_copy(pdf, out_dir / f"{base} - CMYK.pdf")
+        with tempfile.TemporaryDirectory() as tmp:
+            make_proof(card_url(base_url, person, guides=True), png, base_url, tmp)
+    print(f"Done. Files are in {out_dir.relative_to(ROOT)}/")
+
+
+def build_sample(base_url):
+    """Sample proof, PDF, and link preview image for the assets site."""
+    out_dir = ROOT / "images" / "business-cards"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    print("Building sample card")
+    print_pdf(
+        card_url(base_url, SAMPLE),
+        out_dir / "Arts Council Business Card - Sample.pdf",
+        base_url,
+    )
+    with tempfile.TemporaryDirectory() as tmp:
+        make_proof(
+            card_url(base_url, SAMPLE, guides=True),
+            out_dir / "business-card-proof.png",
+            base_url,
+            tmp,
+        )
+        # Clean preview without guides, at a size that suits the web page.
+        pdf = Path(tmp) / "clean.pdf"
+        print_pdf(card_url(base_url, SAMPLE), pdf, base_url)
+        run("pdftoppm", "-r", "300", "-png", str(pdf), str(Path(tmp) / "side"))
+        front, back = sorted(Path(tmp).glob("side-*.png"))
+        # Crop the bleed so the preview shows the finished card.
+        for side in (front, back):
+            run("magick", str(side), "-shave", "38x38", str(side))
+        run(
+            "magick",
+            "-background", "#e9ebee",
+            str(front), str(back),
+            "-bordercolor", "#e9ebee", "-border", "36",
+            "+append",
+            "-resize", "1400x",
+            "-strip",
+            str(out_dir / "business-card-preview.png"),
+        )
+        # 1200x630 link preview: both sides, overlapping, on a gray backdrop.
+        run(
+            "magick",
+            "-size", "1200x630", "xc:#e9ebee",
+            "(", str(back), "-resize", "640x",
+            "-bordercolor", "#d5d9de", "-border", "1", ")",
+            "-geometry", "+480+230", "-composite",
+            "(", str(front), "-resize", "640x",
+            "-bordercolor", "#d5d9de", "-border", "1", ")",
+            "-geometry", "+80+60", "-composite",
+            "-strip",
+            str(out_dir / "business-card-share.png"),
+        )
+    print(f"Done. Files are in {out_dir.relative_to(ROOT)}/")
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
+    parser.add_argument("names", nargs="*", help="only build rows whose name contains this")
+    parser.add_argument("--roster", default=ROOT / "business-cards" / "roster.csv", type=Path)
+    parser.add_argument("--base-url", default="http://localhost:4000")
+    parser.add_argument("--sample", action="store_true", help="build the sample images for the site")
+    parser.add_argument("--cmyk", action="store_true", help="also write a CMYK copy with outlined text")
+    args = parser.parse_args()
+    base_url = args.base_url.rstrip("/")
+
+    if args.sample:
+        build_sample(base_url)
+        return
+
+    if not args.roster.exists():
+        sys.exit(
+            f"error: {args.roster} not found. Copy business-cards/roster.example.csv "
+            "to business-cards/roster.csv and fill it in."
+        )
+    people = read_roster(args.roster)
+    if args.names:
+        wanted = [n.lower() for n in args.names]
+        people = [p for p in people if any(w in p["name"].lower() for w in wanted)]
+    if not people:
+        sys.exit("error: no matching rows in the roster.")
+    build_people(people, base_url, cmyk=args.cmyk)
+
+
+if __name__ == "__main__":
+    main()
