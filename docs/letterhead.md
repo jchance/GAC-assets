@@ -53,3 +53,5 @@ Nothing on the page prints closer than half an inch to the edge, so printers tha
 | Letter text | Georgia, 11 pt |
 | Header and footer text | Rucksack |
 | Colors | Deep Navy, Teal, Coral, and Gold from the [brand palette]({% link docs/logos/usage-guidelines.md %}#2-brand-color-palette) |
+
+The steps for updating the letterhead are on the [Letterhead page in the repository wiki](https://github.com/jchance/GAC-assets/wiki/Letterhead).
