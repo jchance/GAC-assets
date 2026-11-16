@@ -11,10 +11,12 @@
     name, title, email, phone   the person's details (all optional)
     guides                      draw bleed, trim, and safe-area lines (proofs only)
     side=front | side=back      print one side only
+    back=membership | sponsor | plain  which back (default membership); all
+                                shows every back, for proofs
 
   script/build-business-cards prints this page with headless Chrome for
   each row of the board roster. Opened in a browser without a name, it
-  shows a form for filling in the card by hand.
+  shows a form so a board member can preview their own card.
 
   Size: US standard 3.5 x 2 in, trimmed, to MOO's artwork guidelines. MOO
   wants 3.66 x 2.16 in files (0.08 in bleed). Chrome rounds page sizes to
@@ -208,6 +210,45 @@
       color: var(--gold);
     }
 
+    /* QR backs: the pitch on the left, the code on a white tile on the
+       right. The tile's white margin is the code's quiet zone. */
+    .back.qr .trim {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 var(--safe);
+      text-align: left;
+    }
+
+    .pitch { width: 1.95in; }
+
+    .ask {
+      margin: 0;
+      font-size: 12pt;
+      line-height: 1.15;
+      font-weight: 700;
+    }
+
+    .why {
+      margin: 5pt 0 0;
+      font-size: 7pt;
+      line-height: 1.45;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+    }
+
+    .back.qr .stripe { margin: 8pt 0 7pt; }
+    .back.qr .stripe span { width: 0.18in; }
+    /* Lowercase, no tracking, so the full page address fits the column. */
+    .back.qr .web.url { font-size: 7.5pt; letter-spacing: 0.02em; white-space: nowrap; }
+
+    .code {
+      display: block;
+      width: 0.95in;
+      height: 0.95in;
+      border-radius: 4pt;
+    }
+
     /* Proof guides (?guides) -------------------------------------------- */
 
     .guide { display: none; position: absolute; pointer-events: none; }
@@ -264,16 +305,6 @@
         border-radius: 4px;
       }
       .form .actions { margin-top: 14px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
-      .form button {
-        font: inherit;
-        font-weight: 600;
-        padding: 7px 14px;
-        border: 0;
-        border-radius: 4px;
-        background: var(--navy);
-        color: #fff;
-        cursor: pointer;
-      }
       .form .warn { display: none; color: #b42318; font-weight: 600; }
       .form.nofont .warn.font, .form.toolong .warn.long { display: block; }
       @media (max-width: 820px) { .sheet { zoom: 1; } }
@@ -290,7 +321,7 @@
 <body>
   <form class="form" id="form" hidden>
     <h1>Griffin Arts Council business card</h1>
-    <p>Type your details and the card updates. To save a PDF for the printer, choose Print, set the destination to Save as PDF, set margins to None, and turn off headers and footers.</p>
+    <p>Type your details to preview your card. When it looks right, send the same details to <a href="mailto:hello@griffinarts.org">hello@griffinarts.org</a> and we'll make your print files for MOO.</p>
     <div class="fields">
       <label>Name <input name="name" autocomplete="name"></label>
       <label>Title <input name="title" placeholder="Board Member"></label>
@@ -298,11 +329,10 @@
       <label>Phone <input name="phone" type="tel" autocomplete="tel"></label>
     </div>
     <div class="actions">
-      <button type="button" id="print">Print or save as PDF</button>
       <label style="flex-direction: row; font-weight: 400;"><input type="checkbox" id="showGuides"> Show trim and safe-area lines</label>
     </div>
     <p class="warn long">That's too long to fit on the card. Try a shorter version of the name or email.</p>
-    <p class="warn font">The Rucksack font didn't load, so this card would print in a fallback font. Try again on assets.griffinarts.org, or ask the person who keeps the card files to build your PDF.</p>
+    <p class="warn font">The Rucksack font didn't load, so this preview uses a stand-in font. Your printed card will use Rucksack.</p>
   </form>
 
   <div class="sheet" id="sheet">
@@ -335,7 +365,43 @@
       <div class="guide safeline"></div>
     </section>
 
-    <section class="card back" aria-label="Back of card">
+    <section class="card back qr" data-back="membership" aria-label="Back of card, membership">
+      <div class="trim">
+        <div class="pitch">
+          <p class="ask">Become a member.</p>
+          <p class="why">Support artist opportunities, community events, and youth programming in Griffin.</p>
+          <div class="stripe" aria-hidden="true">
+            <span class="teal"></span>
+            <span class="coral"></span>
+            <span class="gold"></span>
+          </div>
+          <p class="web url">griffinarts.org/membership</p>
+        </div>
+        <img class="code" src="../images/business-cards/qr-membership.svg" alt="QR code for griffinarts.org/membership">
+      </div>
+      <div class="guide trimline"></div>
+      <div class="guide safeline"></div>
+    </section>
+
+    <section class="card back qr" data-back="sponsor" aria-label="Back of card, sponsorship">
+      <div class="trim">
+        <div class="pitch">
+          <p class="ask">Sponsor the arts.</p>
+          <p class="why">Put your business behind arts education and public programs across Griffin and Spalding County.</p>
+          <div class="stripe" aria-hidden="true">
+            <span class="teal"></span>
+            <span class="coral"></span>
+            <span class="gold"></span>
+          </div>
+          <p class="web url">griffinarts.org/become-a-sponsor</p>
+        </div>
+        <img class="code" src="../images/business-cards/qr-become-a-sponsor.svg" alt="QR code for griffinarts.org/become-a-sponsor">
+      </div>
+      <div class="guide trimline"></div>
+      <div class="guide safeline"></div>
+    </section>
+
+    <section class="card back" data-back="plain" aria-label="Back of card">
       <div class="trim">
         <p class="tagline">Igniting creativity.<br>Championing emerging artists.</p>
         <div class="stripe" aria-hidden="true">
@@ -431,6 +497,11 @@
       }
 
       if (params.has("guides")) sheet.classList.add("guides");
+      // ?back=membership (default), sponsor, plain, or all (for proofs).
+      var back = params.get("back") || "membership";
+      document.querySelectorAll(".card.back").forEach(function (card) {
+        if (back !== "all" && card.dataset.back !== back) card.remove();
+      });
       if (params.get("side") === "front") sheet.classList.add("hide-back");
       if (params.get("side") === "back") sheet.classList.add("hide-front");
 
@@ -446,9 +517,6 @@
       if (!params.has("name")) {
         form.hidden = false;
         form.addEventListener("input", function () { render(fromForm()); });
-        document.getElementById("print").addEventListener("click", function () {
-          window.print();
-        });
         document.getElementById("showGuides").addEventListener("change", function (e) {
           sheet.classList.toggle("guides", e.target.checked);
         });
