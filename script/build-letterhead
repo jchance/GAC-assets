@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+# Build the letterhead PDFs, Word templates, and preview images from
+# letterhead/letterhead.html.
+#
+# Start the site first (bundle exec jekyll serve). The page must load over
+# localhost so the Adobe Fonts kit serves Rucksack.
+#
+# Usage: script/build-letterhead [BASE_URL]   (default http://localhost:4000)
+#
+# Needs Google Chrome, poppler (pdftoppm, pdffonts), and python-docx.
+# Set PYTHON to a Python that has python-docx if the default one doesn't.
+
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+BASE_URL="${1:-http://localhost:4000}"
+PAGE="$BASE_URL/letterhead/letterhead.html"
+OUT="images/letterhead"
+CHROME="${CHROME:-/Applications/Google Chrome.app/Contents/MacOS/Google Chrome}"
+PYTHON="${PYTHON:-python3}"
+
+mkdir -p "$OUT"
+
+print_pdf() {
+  local url="$1" out="$2"
+  "$CHROME" --headless=new --disable-gpu --no-pdf-header-footer \
+    --virtual-time-budget=10000 --print-to-pdf="$out" "$url" 2>/dev/null
+  # Fail if the brand font didn't load (Chrome would fall back silently).
+  if ! pdffonts "$out" | grep -q RuckSack; then
+    echo "error: Rucksack is not embedded in $out. Is $BASE_URL running?" >&2
+    exit 1
+  fi
+}
+
+for variant in Color Grayscale; do
+  query=""
+  [ "$variant" = Grayscale ] && query="?mode=gray"
+  pdf="$OUT/Arts Council Letterhead - $variant.pdf"
+
+  echo "Building $variant letterhead"
+  print_pdf "$PAGE$query" "$pdf"
+  "$PYTHON" script/letterhead_docx.py "$pdf" "$OUT/Arts Council Letterhead - $variant.docx"
+done
+
+echo "Building preview images"
+tmp="$(mktemp -d)"
+trap 'rm -rf "$tmp"' EXIT
+print_pdf "$PAGE?sample" "$tmp/sample.pdf"
+pdftoppm -r 120 -png -singlefile "$tmp/sample.pdf" "$OUT/letterhead-preview"
+
+# 1200x630 link preview image: the top of the sample page on a gray backdrop.
+pdftoppm -png -singlefile -scale-to-x 1040 -scale-to-y -1 "$tmp/sample.pdf" "$tmp/share-page"
+magick -size 1200x630 xc:'#e9ebee' \
+  \( "$tmp/share-page.png" -bordercolor '#d5d9de' -border 1 \) -geometry +80+56 -composite \
+  -strip "$OUT/letterhead-share.png"
+
+echo "Done. Files are in $OUT/"
