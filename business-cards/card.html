@@ -16,9 +16,12 @@
   each row of the board roster. Opened in a browser without a name, it
   shows a form for filling in the card by hand.
 
-  Size: US standard 3.5 x 2 in, trimmed. Each PDF page is 3.75 x 2.25 in:
-  the card plus 0.125 in bleed on every side. Text and the logo stay at
-  least 0.1875 in inside the trim (the safe area).
+  Size: US standard 3.5 x 2 in, trimmed, to MOO's artwork guidelines. MOO
+  wants 3.66 x 2.16 in files (0.08 in bleed). Chrome rounds page sizes to
+  whole points, so this page is 264 x 156 pt (6 pt bleed) and the build
+  script trims 0.24 pt from each edge to land on 263.52 x 155.52 pt
+  exactly. Text and the logo stay at least 0.1875 in inside the trim, well
+  within MOO's 0.08 in safe area.
 -->
 <html lang="en">
 <head>
@@ -34,11 +37,11 @@
       --teal: #00A89C;
       --coral: #F26A51;
       --gold: #F9C646;
-      --bleed: 0.125in;
+      --bleed: 6pt;
       --safe: 0.1875in;
     }
 
-    @page { size: 3.75in 2.25in; margin: 0; }
+    @page { size: 264pt 156pt; margin: 0; }
 
     * { box-sizing: border-box; }
 
@@ -58,8 +61,8 @@
     /* One printed page: the trimmed card plus bleed on all four sides. */
     .card {
       position: relative;
-      width: 3.75in;
-      height: 2.25in;
+      width: 264pt;
+      height: 156pt;
       overflow: hidden;
       background: #fff;
       break-after: page;

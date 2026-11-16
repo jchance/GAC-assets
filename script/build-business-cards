@@ -1,9 +1,16 @@
 #!/usr/bin/env python3
-"""Build print-ready business card PDFs and proofs from the board roster.
+"""Build MOO-ready business card files and proofs from the board roster.
 
-Each row of the roster becomes one two-page PDF (front, back) at
-3.75 x 2.25 in: the 3.5 x 2 in card plus 0.125 in bleed. Each card also
-gets a proof image with the trim and safe-area lines drawn on it.
+Each row of the roster gets a folder in business-cards/print/ with:
+
+  <Name> - Front.pdf   upload to MOO as the front
+  <Name> - Back.pdf    upload to MOO as the back (the same for everyone)
+  <Name> - proof.png   both sides with trim and safe-area lines, for review
+
+The PDFs follow MOO's US standard business card guidelines: one page per
+file, 3.66 x 2.16 in (3.5 x 2 in card plus 0.08 in bleed), CMYK with the
+Coated GRACoL 2006 profile, text turned into outlines, saved as PDF/X-1a,
+and no crop marks.
 
 Start the site first (bundle exec jekyll serve). The card page must load
 over localhost so the Adobe Fonts kit serves Rucksack.
@@ -11,15 +18,15 @@ over localhost so the Adobe Fonts kit serves Rucksack.
 Usage:
   script/build-business-cards                 every row in business-cards/roster.csv
   script/build-business-cards "Jason Chance"  only rows whose name matches
-  script/build-business-cards --sample        sample images for the assets site
-  script/build-business-cards --cmyk          also write a CMYK copy with text outlined
+  script/build-business-cards --sample        sample files for the assets site
 
 Options:
   --roster FILE     roster CSV (default business-cards/roster.csv)
   --base-url URL    where the site is running (default http://localhost:4000)
 
-Needs Google Chrome, poppler (pdffonts, pdfinfo, pdftoppm), and ImageMagick.
---cmyk also needs Ghostscript.
+Needs Google Chrome, Ghostscript, poppler (pdffonts, pdfinfo, pdftoppm),
+ImageMagick, and the Coated GRACoL 2006 ICC profile. Adobe's color profiles
+include it; set GRACOL_ICC if yours is somewhere else.
 """
 
 import argparse
@@ -36,6 +43,11 @@ ROOT = Path(__file__).resolve().parent.parent
 CHROME = os.environ.get(
     "CHROME", "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 )
+GRACOL_ICC = Path(os.environ.get(
+    "GRACOL_ICC",
+    "/Library/Application Support/Adobe/Color/Profiles/Recommended/CoatedGRACoL2006.icc",
+))
+LEGEND_FONT = "/System/Library/Fonts/Helvetica.ttc"
 FIELDS = ["name", "title", "email", "phone"]
 SAMPLE = {
     "name": "Your Name",
@@ -43,18 +55,52 @@ SAMPLE = {
     "email": "name@griffinarts.org",
     "phone": "(770) 555-0100",
 }
-LEGEND_FONT = "/System/Library/Fonts/Helvetica.ttc"
-# 3.75 x 2.25 in, in PDF points.
-PAGE_SIZE = "270 x 162 pts"
+
+# card.html prints at 264 x 156 pt (6 pt bleed) because Chrome rounds page
+# sizes to whole points. Ghostscript trims 0.24 pt off each edge to reach
+# MOO's 3.66 x 2.16 in, leaving 0.08 in (5.76 pt) of bleed.
+CHROME_SIZE = "264 x 156 pts"
+MOO_SIZE = "263.52 x 155.52 pts"
+MOO_W, MOO_H, MOO_BLEED, SHIFT = 263.52, 155.52, 5.76, 0.24
+
+PDFX_DEF = """\
+[ /GTS_PDFXVersion (PDF/X-1a:2001)
+  /GTS_PDFXConformance (PDF/X-1a:2001)
+  /Title (Griffin Arts Council business card)
+  /Trapped /False
+/DOCINFO pdfmark
+[/_objdef {icc_PDFX} /type /stream /OBJ pdfmark
+[{icc_PDFX} << /N 4 >> /PUT pdfmark
+[{icc_PDFX} (%s) (r) file /PUT pdfmark
+[/_objdef {OutputIntent_PDFX} /type /dict /OBJ pdfmark
+[{OutputIntent_PDFX} <<
+  /Type /OutputIntent
+  /S /GTS_PDFX
+  /OutputCondition (Coated GRACoL 2006)
+  /Info (Coated GRACoL 2006 \\(ISO 12647-2:2004\\))
+  /OutputConditionIdentifier (CGATS TR 006)
+  /RegistryName (http://www.color.org)
+  /DestOutputProfile {icc_PDFX}
+>> /PUT pdfmark
+[{Catalog} << /OutputIntents [ {OutputIntent_PDFX} ] >> /PUT pdfmark
+"""
 
 
 def run(*cmd, **kwargs):
     return subprocess.run(cmd, check=True, **kwargs)
 
 
-def card_url(base_url, person, guides=False):
-    params = {key: person.get(key, "") for key in FIELDS}
-    query = urlencode(params)
+def pdf_info(path):
+    info = run("pdfinfo", str(path), capture_output=True, text=True).stdout
+    pages = re.search(r"^Pages:\s+(\d+)", info, re.M).group(1)
+    size = re.search(r"^Page size:\s+(.*?)(?: \(|$)", info, re.M).group(1).strip()
+    return int(pages), size
+
+
+def card_url(base_url, person, side=None, guides=False):
+    query = urlencode({key: person.get(key, "") for key in FIELDS})
+    if side:
+        query += f"&side={side}"
     if guides:
         query += "&guides"
     return f"{base_url}/business-cards/card.html?{query}"
@@ -65,7 +111,7 @@ def check_fit(url, label):
     dom = run(
         CHROME, "--headless=new", "--disable-gpu",
         "--virtual-time-budget=10000", "--dump-dom", url,
-        stdout=subprocess.PIPE, text=True, stderr=subprocess.DEVNULL,
+        stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True,
     ).stdout
     match = re.search(r'<body[^>]*data-overflow="([^"]*)"', dom)
     if match is None:
@@ -73,59 +119,64 @@ def check_fit(url, label):
     if match.group(1):
         fields = match.group(1).split()
         verb = "are" if len(fields) > 1 else "is"
-        sys.exit(f"error: {label}'s {' and '.join(fields)} {verb} too long to fit on the card. "
-                 "Shorten it in the roster and run this again.")
+        sys.exit(f"error: {label}'s {' and '.join(fields)} {verb} too long to fit "
+                 "on the card. Shorten it in the roster and run this again.")
 
 
-def print_pdf(url, out, base_url):
+def print_pdf(url, out, base_url, pages):
     run(
-        CHROME,
-        "--headless=new",
-        "--disable-gpu",
-        "--no-pdf-header-footer",
-        "--virtual-time-budget=10000",
-        f"--print-to-pdf={out}",
-        url,
+        CHROME, "--headless=new", "--disable-gpu", "--no-pdf-header-footer",
+        "--virtual-time-budget=10000", f"--print-to-pdf={out}", url,
         stderr=subprocess.DEVNULL,
     )
     # Chrome falls back to another font without saying so. Catch that.
     fonts = run("pdffonts", str(out), capture_output=True, text=True).stdout
     if "RuckSack" not in fonts:
         sys.exit(f"error: Rucksack is not embedded in {out}. Is {base_url} running?")
-    check_pdf(out)
+    got = pdf_info(out)
+    if got != (pages, CHROME_SIZE):
+        sys.exit(f"error: {out} has {got[0]} pages of {got[1]}, "
+                 f"expected {pages} of {CHROME_SIZE}")
 
 
-def check_pdf(out):
-    info = run("pdfinfo", str(out), capture_output=True, text=True).stdout
-    pages = re.search(r"^Pages:\s+(\d+)", info, re.M).group(1)
-    size = re.search(r"^Page size:\s+(.*?)(?: \(|$)", info, re.M).group(1).strip()
-    if pages != "2" or size != PAGE_SIZE:
-        sys.exit(f"error: {out} has {pages} pages of {size}, expected 2 of {PAGE_SIZE}")
+def ps_string(text):
+    return text.replace("\\", "\\\\").replace("(", "\\(").replace(")", "\\)")
 
 
-def cmyk_copy(pdf, out):
-    """CMYK copy with the text turned into outlines, for print shops that
-    ask for CMYK files without live fonts. Ghostscript converts the brand
-    colors with its default profile, so they land within a few points of
-    the brand CMYK values rather than exactly on them."""
+def to_moo_pdf(src, out, tmp):
+    """Convert one side to PDF/X-1a: CMYK (GRACoL 2006), outlined text,
+    exact MOO size, with the TrimBox marking the 3.5 x 2 in card."""
+    pdfx = Path(tmp) / "pdfx.ps"
+    pdfx.write_text(PDFX_DEF % ps_string(str(GRACOL_ICC)))
     run(
-        "gs", "-q", "-o", str(out),
-        "-sDEVICE=pdfwrite",
+        "gs", "-q", "-dBATCH", "-dNOPAUSE", "-dPDFX",
+        f"--permit-file-read={GRACOL_ICC}",
+        "-sDEVICE=pdfwrite", "-dCompatibilityLevel=1.3",
         "-dNoOutputFonts",
-        "-sColorConversionStrategy=CMYK",
-        "-dProcessColorModel=/DeviceCMYK",
-        str(pdf),
+        "-sColorConversionStrategy=CMYK", "-sProcessColorModel=DeviceCMYK",
+        f"-sOutputICCProfile={GRACOL_ICC}",
+        f"-dDEVICEWIDTHPOINTS={MOO_W}", f"-dDEVICEHEIGHTPOINTS={MOO_H}", "-dFIXEDMEDIA",
+        "-o", str(out),
+        "-c",
+        f"<< /PDFXTrimBoxToMediaBoxOffset [{MOO_BLEED} {MOO_BLEED} {MOO_BLEED} {MOO_BLEED}]"
+        " /PDFXBleedBoxToTrimBoxOffset [0 0 0 0] >> setdistillerparams"
+        f" << /PageOffset [-{SHIFT} -{SHIFT}] >> setpagedevice",
+        "-f", str(pdfx), str(src),
     )
-    check_pdf(out)
+    got = pdf_info(out)
+    if got != (1, MOO_SIZE):
+        sys.exit(f"error: {out} is {got[0]} pages of {got[1]}, expected 1 of {MOO_SIZE}")
+    fonts = run("pdffonts", str(out), capture_output=True, text=True).stdout
+    if len(fonts.strip().splitlines()) > 2:
+        sys.exit(f"error: {out} still has live fonts; the text should be outlines.")
 
 
 def make_proof(url, out_png, base_url, tmp):
     """Front and back side by side, at 300 dpi, with trim and safe lines."""
     pdf = Path(tmp) / "proof.pdf"
-    print_pdf(url, pdf, base_url)
-    prefix = Path(tmp) / "side"
-    run("pdftoppm", "-r", "300", "-png", str(pdf), str(prefix))
-    sides = sorted(Path(tmp).glob("side-*.png"))
+    print_pdf(url, pdf, base_url, pages=2)
+    run("pdftoppm", "-r", "300", "-png", str(pdf), str(Path(tmp) / "proof"))
+    sides = sorted(Path(tmp).glob("proof-*.png"))
     run(
         "magick",
         "-background", "#e9ebee",
@@ -147,6 +198,18 @@ def make_proof(url, out_png, base_url, tmp):
         s.unlink()
 
 
+def build_card(person, out_dir, base_url, label):
+    """Front PDF, back PDF, and proof for one person."""
+    out_dir.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory() as tmp:
+        for side in ("front", "back"):
+            raw = Path(tmp) / f"{side}.pdf"
+            print_pdf(card_url(base_url, person, side=side), raw, base_url, pages=1)
+            to_moo_pdf(raw, out_dir / f"{label} - {side.title()}.pdf", tmp)
+        make_proof(card_url(base_url, person, guides=True),
+                   out_dir / f"{label} - proof.png", base_url, tmp)
+
+
 def slug(name):
     return re.sub(r"[^A-Za-z0-9 .-]", "", name).strip() or "card"
 
@@ -162,48 +225,33 @@ def read_roster(path):
     return people
 
 
-def build_people(people, base_url, cmyk=False):
-    out_dir = ROOT / "business-cards" / "print"
-    out_dir.mkdir(parents=True, exist_ok=True)
+def build_people(people, base_url):
+    print_dir = ROOT / "business-cards" / "print"
     for person in people:
-        base = f"{slug(person['name'])} - Business Card"
-        pdf = out_dir / f"{base}.pdf"
-        png = out_dir / f"{base} - proof.png"
+        name = slug(person["name"])
         print(f"Building {person['name']}")
         check_fit(card_url(base_url, person), person["name"])
-        print_pdf(card_url(base_url, person), pdf, base_url)
-        if cmyk:
-            cmyk_copy(pdf, out_dir / f"{base} - CMYK.pdf")
-        with tempfile.TemporaryDirectory() as tmp:
-            make_proof(card_url(base_url, person, guides=True), png, base_url, tmp)
-    print(f"Done. Files are in {out_dir.relative_to(ROOT)}/")
+        build_card(person, print_dir / name, base_url, name)
+    print(f"Done. Files are in {print_dir.relative_to(ROOT)}/")
 
 
 def build_sample(base_url):
-    """Sample proof, PDF, and link preview image for the assets site."""
+    """Sample files and preview images for the assets site."""
     out_dir = ROOT / "images" / "business-cards"
-    out_dir.mkdir(parents=True, exist_ok=True)
+    prefix = "Arts Council Business Card"
     print("Building sample card")
-    print_pdf(
-        card_url(base_url, SAMPLE),
-        out_dir / "Arts Council Business Card - Sample.pdf",
-        base_url,
-    )
+    build_card(SAMPLE, out_dir, base_url, f"{prefix} - Sample")
+    (out_dir / f"{prefix} - Sample - Back.pdf").rename(out_dir / f"{prefix} - Back.pdf")
+    (out_dir / f"{prefix} - Sample - proof.png").rename(out_dir / "business-card-proof.png")
+
     with tempfile.TemporaryDirectory() as tmp:
-        make_proof(
-            card_url(base_url, SAMPLE, guides=True),
-            out_dir / "business-card-proof.png",
-            base_url,
-            tmp,
-        )
-        # Clean preview without guides, at a size that suits the web page.
         pdf = Path(tmp) / "clean.pdf"
-        print_pdf(card_url(base_url, SAMPLE), pdf, base_url)
+        print_pdf(card_url(base_url, SAMPLE), pdf, base_url, pages=2)
         run("pdftoppm", "-r", "300", "-png", str(pdf), str(Path(tmp) / "side"))
         front, back = sorted(Path(tmp).glob("side-*.png"))
-        # Crop the bleed so the preview shows the finished card.
+        # Crop the 6 pt bleed (25 px at 300 dpi) to show the finished card.
         for side in (front, back):
-            run("magick", str(side), "-shave", "38x38", str(side))
+            run("magick", str(side), "-shave", "25x25", str(side))
         run(
             "magick",
             "-background", "#e9ebee",
@@ -235,10 +283,13 @@ def main():
     parser.add_argument("names", nargs="*", help="only build rows whose name contains this")
     parser.add_argument("--roster", default=ROOT / "business-cards" / "roster.csv", type=Path)
     parser.add_argument("--base-url", default="http://localhost:4000")
-    parser.add_argument("--sample", action="store_true", help="build the sample images for the site")
-    parser.add_argument("--cmyk", action="store_true", help="also write a CMYK copy with outlined text")
+    parser.add_argument("--sample", action="store_true", help="build the sample files for the site")
     args = parser.parse_args()
     base_url = args.base_url.rstrip("/")
+
+    if not GRACOL_ICC.exists():
+        sys.exit(f"error: no GRACoL 2006 profile at {GRACOL_ICC}. "
+                 "Set GRACOL_ICC to the CoatedGRACoL2006.icc file.")
 
     if args.sample:
         build_sample(base_url)
@@ -255,7 +306,7 @@ def main():
         people = [p for p in people if any(w in p["name"].lower() for w in wanted)]
     if not people:
         sys.exit("error: no matching rows in the roster.")
-    build_people(people, base_url, cmyk=args.cmyk)
+    build_people(people, base_url)
 
 
 if __name__ == "__main__":
