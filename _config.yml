@@ -28,6 +28,9 @@ exclude:
   - Gemfile.lock
   - node_modules
   - vendor/
+  # Business cards: the private roster and built print files.
+  - business-cards/roster.csv
+  - business-cards/print/
 
 plugins:
   # Registers the Liquid tag used by docs/colors.md and the color examples.
