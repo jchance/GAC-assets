@@ -42,7 +42,7 @@ col_w = (583.2 - 28.8) / 3
 L = ['<?xml version="1.0" encoding="UTF-8"?>',
      '<svg xmlns="http://www.w3.org/2000/svg" width="8.5in" height="5.5in" viewBox="0 0 612 396">',
      '  <title>Griffin Arts Council pick-your-art table card</title>',
-     '  <!-- Half letter landscape, no bleed. Live text: FatFrank Heavy, RuckSack Book and Demi (Adobe Fonts). -->',
+     '  <!-- Half letter landscape, no bleed. Live text: FatFrank (heavy weight), RuckSack Book and Demi (Adobe Fonts). -->',
      '  <rect id="paper" width="612" height="396" fill="#ffffff"/>',
      f'  <g id="logo" transform="translate({LOGO_X:.2f} {LOGO_Y:.2f}) scale({LOGO_W / vb_w:.6f})">',
      '    ' + logo_body, '  </g>',
