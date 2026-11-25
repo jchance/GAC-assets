@@ -38,11 +38,11 @@ assert ghost_shapes and all('fill="#ffffff"' in s for s in ghost_shapes)
 GHOST = dict(x=454, y=534.8, w=109)
 ghost_scale = GHOST["w"] / ghost_vb_w
 
-# QR: inline its path. Source is 300 units wide with modules at scale 10.345.
-qr_svg = (HERE / "membership-qr-code.svg").read_text()
+# QR: inline its path. The file's path is in module units, 29 modules wide.
+qr_svg = (HERE.parent / "images" / "qr-codes" / "GAC QR Code - Membership Signup.svg").read_text()
 qr_d = re.search(r'<path fill-rule="evenodd" d="([^"]+)"', qr_svg).group(1)
 qr_img = dict(x=67.68, y=546.49, w=185.04)
-qr_scale = qr_img["w"] / 300 * 10.345
+qr_scale = qr_img["w"] / 29
 
 # Photo: embed the JPEG, cropped like CSS cover at 50% 42%.
 photo_bytes = (HERE / "art-club-tiny-canvases.jpg").read_bytes()

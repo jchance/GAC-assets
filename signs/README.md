@@ -8,10 +8,9 @@ The finished files (PDFs, SVGs, proofs, and the page's share image) live in `ima
 | --- | --- |
 | `membership-table-sign.py` | Writes the 8.5 × 11 in membership table sign |
 | `pick-your-art-card.py` | Writes the 8.5 × 5.5 in pick-your-art card |
-| `membership-qr-code.svg` | The GiveButter membership QR code, on a white background |
 | `art-club-tiny-canvases.jpg` | The Art Club photo on the sign, from the GAC site (`images/art-club/2026-10-11/finished-tiny-canvases.jpg`) |
 
-The logos come from `images/logos/`, so the signs pick up any change to the official files.
+The logos come from `images/logos/` and the QR code from `images/qr-codes/GAC QR Code - Membership Signup.svg`, so the signs pick up any change to those files.
 
 ## Changing a sign
 
