@@ -22,6 +22,6 @@ script/build-signs
 
 That rewrites the SVG, PDF, and proof for both signs, plus the share image, in `images/signs/`. The build needs Google Chrome, python3, poppler, and ImageMagick.
 
-The text uses FatFrank Heavy and RuckSack Book, Demi, and Bold from the GAC's Adobe Fonts plan. Turn them on in Creative Cloud first. The build stops if a font didn't make it into a PDF.
+The text uses FatFrank, set in a heavy weight, and RuckSack Book, Demi, and Bold from the GAC's Adobe Fonts plan. Turn them on in Creative Cloud first. The build stops if a font didn't make it into a PDF.
 
 If you swap the QR code, scan the new proof with a phone before you print.

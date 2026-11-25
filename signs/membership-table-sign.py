@@ -103,7 +103,7 @@ lines = [
     '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"',
     '     width="8.5in" height="11in" viewBox="0 0 612 792">',
     "  <title>Griffin Arts Council membership table sign</title>",
-    "  <!-- US Letter, no bleed. Text is live: FatFrank Heavy and RuckSack (Book, Demi, Bold) from Adobe Fonts. -->",
+    "  <!-- US Letter, no bleed. Text is live: FatFrank (heavy weight) and RuckSack (Book, Demi, Bold) from Adobe Fonts. -->",
     "  <defs>",
     f'    <clipPath id="photo-crop"><rect x="{box["x"]}" y="{box["y"]}" width="{box["w"]}" height="{box["h"]}"/></clipPath>',
     '    <clipPath id="panel-crop"><rect x="28.8" y="514.81" width="554.4" height="248.39"/></clipPath>',

@@ -3,7 +3,7 @@
 # Python sources in signs/. Writes an editable SVG, a print PDF, and a
 # proof PNG for each to images/signs/, plus the Signs page share image.
 #
-# The SVGs ask for FatFrank Heavy and RuckSack (Book, Demi, Bold) by name,
+# The SVGs ask for FatFrank (heavy weight) and RuckSack (Book, Demi, Bold) by name,
 # so those fonts must be installed on this Mac through Adobe Fonts.
 #
 # Usage: script/build-signs
