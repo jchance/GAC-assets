@@ -44,6 +44,6 @@ This 8.5 × 5.5 in card lies flat on the table next to the Artist Trading Cards 
 
 ## Editing
 
-The SVGs use FatFrank Heavy and RuckSack from the GAC's Adobe Fonts plan. Turn those fonts on in Creative Cloud before you open a file in Illustrator. Without them, the text switches to a plain font.
+The SVGs use [FatFrank Heavy](https://fonts.adobe.com/fonts/fatfrank) and [RuckSack](https://fonts.adobe.com/fonts/rucksack) from the GAC's Adobe Fonts plan. Turn those fonts on in Creative Cloud before you open a file in Illustrator. Without them, the text switches to a plain font.
 
 For a quick change, like a new date or price for one event, edit the text in Illustrator and print from there. To change a sign for good, edit its source in the repository and rebuild. The steps are in `signs/README.md`.
