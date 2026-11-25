@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Build the membership table sign and the pick-your-art card from the
-# Python sources in signs/: an editable SVG, a print PDF, and a proof PNG
-# for each.
+# Python sources in signs/. Writes an editable SVG, a print PDF, and a
+# proof PNG for each to images/signs/, plus the Signs page share image.
 #
 # The SVGs ask for FatFrank Heavy and RuckSack (Book, Demi, Bold) by name,
 # so those fonts must be installed on this Mac through Adobe Fonts.
@@ -14,7 +14,7 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-OUT="signs"
+OUT="images/signs"
 CHROME="${CHROME:-/Applications/Google Chrome.app/Contents/MacOS/Google Chrome}"
 
 tmp="$(mktemp -d)"
@@ -63,5 +63,15 @@ python3 -I signs/pick-your-art-card.py "$card.svg" >/dev/null
 wrap "$PWD/$card.svg" 2 "$tmp/card.html"
 print_pdf "$tmp/card.html" "$card - 2 per page.pdf"
 pdftoppm -r 100 -png -singlefile -H 550 "$card - 2 per page.pdf" "$card - proof" 2>/dev/null
+
+echo "Building the share image"
+# 1200x630 link preview: the sign and the card side by side on a gray backdrop.
+pdftoppm -png -singlefile -scale-to-x -1 -scale-to-y 540 "$sign.pdf" "$tmp/share-sign" 2>/dev/null
+pdftoppm -png -singlefile -scale-to-x 620 -scale-to-y -1 -H 396 -W 612 -r 72 "$card - 2 per page.pdf" "$tmp/share-card" 2>/dev/null
+magick "$tmp/share-card.png" -resize 620x "$tmp/share-card.png"
+magick -size 1200x630 xc:'#e9ebee' \
+  \( "$tmp/share-sign.png" -bordercolor '#d5d9de' -border 1 \) -geometry +60+44 -composite \
+  \( "$tmp/share-card.png" -bordercolor '#d5d9de' -border 1 \) -gravity East -geometry +60+0 -composite \
+  -strip "$OUT/signs-share.png"
 
 echo "Done. Files are in $OUT/"
