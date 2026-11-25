@@ -1,7 +1,8 @@
 ---
 layout: default
 title: Letterhead
-nav_order: 3
+parent: Documents
+nav_order: 2
 description: Griffin Arts Council letterhead for US Letter paper, with Word templates and print-ready PDFs for office laser printers.
 image:
   path: /images/letterhead/letterhead-share.png

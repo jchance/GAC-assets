@@ -1,7 +1,8 @@
 ---
 layout: default
 title: Business Cards
-nav_order: 3
+parent: Documents
+nav_order: 1
 description: Griffin Arts Council business cards for board members, built to MOO's US standard size with print-ready PDF/X-1a files.
 image:
   path: /images/business-cards/business-card-share.png

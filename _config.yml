@@ -28,6 +28,7 @@ exclude:
   - Gemfile.lock
   - node_modules
   - vendor/
+  - signs/
   # Business cards: the private roster and built print files.
   - business-cards/roster.csv
   - business-cards/print/
