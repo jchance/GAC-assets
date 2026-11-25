@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Web Color Palette
-nav_order: 4
+nav_order: 6
 ---
 
 # Griffin Arts Council Web Color Palette
