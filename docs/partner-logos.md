@@ -7,7 +7,7 @@ image:
   path: /images/partner-logos/partner-logos-share.png
   width: 1200
   height: 630
-  alt: Logos for the City of Griffin, Piedmont Brewery, Lucky You Tattoo Emporium, Atomic Van, Jay Daniel Photography, and Artkitect Design Lab
+  alt: Logos for the City of Griffin, Piedmont Brewery, Lucky You Tattoo Emporium, Atomic Van, Jay Daniel Photography, Artkitect Design Lab, and ’stache studio
 ---
 
 # Partner Logos
@@ -26,5 +26,6 @@ The SVG stays sharp at any size and works best for print. The PNG is 1200 pixels
 | [Atomic Van](https://atomicvan.com) | ![Atomic Van logo](/images/partner-logos/Atomic Van.svg){: style="width: 160px;"} | <a href="/images/partner-logos/Atomic Van.svg" download="Atomic Van.svg">SVG</a> · <a href="/images/partner-logos/Atomic Van.png" download="Atomic Van.png">PNG</a> |
 | [Jay Daniel Photography](https://jaydanielphotography.com) | ![Jay Daniel Photography logo](/images/partner-logos/Jay Daniel Photography.svg){: style="width: 160px;"} | <a href="/images/partner-logos/Jay Daniel Photography.svg" download="Jay Daniel Photography.svg">SVG</a> · <a href="/images/partner-logos/Jay Daniel Photography.png" download="Jay Daniel Photography.png">PNG</a> |
 | [Artkitect Design Lab](https://www.facebook.com/artkitectdesignlab) | ![Artkitect Design Lab logo](/images/partner-logos/Artkitect Design Lab.svg){: style="width: 160px;"} | <a href="/images/partner-logos/Artkitect Design Lab.svg" download="Artkitect Design Lab.svg">SVG</a> · <a href="/images/partner-logos/Artkitect Design Lab.png" download="Artkitect Design Lab.png">PNG</a> |
+| [’stache studio](https://stachestudio.net) | ![’stache studio logo](/images/partner-logos/Stache Studio.svg){: style="width: 160px;"} | <a href="/images/partner-logos/Stache Studio.svg" download="Stache Studio.svg">SVG</a> · <a href="/images/partner-logos/Stache Studio.png" download="Stache Studio.png">PNG</a> |
 
 When a new partner joins, add their logo to `images/partner-logos/` and a row to this table. The GAC website keeps its own copies in `images/sponsors/`.
